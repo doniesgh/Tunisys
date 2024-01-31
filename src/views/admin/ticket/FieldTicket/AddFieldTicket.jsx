@@ -24,7 +24,10 @@ const AddFieldTicket = () => {
   const [isEquipementModalOpen, setEquipementModalOpen] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [error, setError] = useState(null);
-  useEffect(() => {
+  const handleClientSelection = (clientInfo) => {
+    
+};
+  {/*useEffect(() => {
     // Effectuez une requête pour récupérer la liste des utilisateurs
     const fetchUsers = async () => {
       try {
@@ -42,7 +45,7 @@ const AddFieldTicket = () => {
     };
 
     fetchUsers();
-  }, []);
+  }, []);*/}
   const Add = async (e) => {
     e.preventDefault();
 
@@ -134,8 +137,6 @@ const AddFieldTicket = () => {
   };
   const handleUserChange = (event) => {
     const userId = event.target.value;
-
-    // Mettre à jour l'état avec l'ID de l'utilisateur sélectionné
     setSelectedUser(userId);
   };
 
@@ -160,7 +161,7 @@ const AddFieldTicket = () => {
                   value={equipement}
                   onChange={(e) => setEquipement(e.target.value)}
                   type="text"
-                  // onClick={openEquipementModal}
+                   onClick={openEquipementModal}
                   name="first-name"
                   id="first-name"
                   autocomplete="given-name"
@@ -195,7 +196,14 @@ const AddFieldTicket = () => {
                 Technicien
               </label>
               <div className="mt-2">
-                <select
+              <input
+                 onClick={openTechnicienModal}
+                  value={technicien}
+                  type="text" // Change the type to datetime-local
+
+                  class="w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:block sm:leading-6"
+                />
+               { /*<select
                   value={selectedUser}
                   onChange={handleUserChange}
                   name="user-list"
@@ -208,7 +216,7 @@ const AddFieldTicket = () => {
                       {user.firstname} {user.lastname}
                     </option>
                   ))}
-                </select>
+                  </select>*/}
               </div>
             </div>
             <div class="sm:col-span-3">
@@ -413,10 +421,10 @@ const AddFieldTicket = () => {
         </div>
       </div>
       {isTechnicienModalOpen && (
-        <TechnicienList handleClose={closeTechnicienModal} />
+        <TechnicienList handleClose={closeTechnicienModal}  handleTechnicienSelection={handleClientSelection} />
       )}
       {isEquipementModalOpen && (
-        <EquipementList handleClose={closeEquipementModal} />
+        <EquipementList handleClose={closeEquipementModal}  handleEquipementSelection={handleClientSelection}  />
       )}
 
       <div class="mt-6 flex items-center justify-end gap-x-6">

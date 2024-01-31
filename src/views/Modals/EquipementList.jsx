@@ -7,6 +7,7 @@ const EquipementList = ({ handleClose, handleEquipementSelection }) => {
         try {
             const response = await fetch('/api/equi/list');
             const data = await response.json();
+            console.log(data)
             return data;
         } catch (error) {
             console.error('Error fetching equipement:', error);

@@ -107,7 +107,7 @@ const ManagementEquipement = () => {
                 if (selectedEquipementIds.length !== 1) {
                   Swal.fire({
                     icon: "warning",
-                    title: "Please select one client",
+                    title: "Please select one Equipement",
                   });
                 }
               }}
@@ -283,10 +283,10 @@ const ManagementEquipement = () => {
                     </td>
                     <td className="px-6 py-4">{equipement.modele} </td>
                     <td className="px-6 py-4">
-                      {format(
+                      {/*format(
                         new Date(equipement.createdAt || "N/A"),
                         "yyyy/MM/dd"
-                      )}
+                      )*/}
                     </td>
                     <td className="px-6 py-4">
                       <button

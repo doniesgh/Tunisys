@@ -1,4 +1,5 @@
 import React from "react";
+import Swal from 'sweetalert2';
 import {
   IoMdAdd,
   IoMdDoneAll,
@@ -8,6 +9,7 @@ import {
   IoMdSettings,
   IoMdShare,
 } from "react-icons/io";
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 const FieldTicket = () => {
   const [ticketData, setTicketData] = useState([]);
@@ -18,6 +20,8 @@ const FieldTicket = () => {
       .catch((error) => console.error("Error fetching ticket data:", error));
   }, []);
   const [scnquery, setSCNQuery] = useState("");
+  const [selectedTicketIds, setSelectedTicketIds] = useState([]);
+
   return (
     <div>
       <div class="relative mt-9 overflow-x-auto shadow-lg sm:rounded-lg">
@@ -28,18 +32,54 @@ const FieldTicket = () => {
               Add
             </button>
           </a>
-          <button className=" flex    text-gray-900 dark:text-gray-300  dark:text-gray-600">
-            <IoMdEye className="h-6 w-6" />
-            View
-          </button>
-          <button className=" flex    text-gray-900 dark:text-gray-300  dark:text-gray-600">
-            <IoMdSettings className="h-6 w-6" />
-            Edit
-          </button>
-          <button className=" flex    text-gray-900 dark:text-gray-300  dark:text-gray-600">
-            <IoMdDoneAll className="h-6 w-6" />
-            Solved
-          </button>
+          <Link to={selectedTicketIds.length === 1 ? `/admin/contrat/${selectedTicketIds}` : '#'}>
+            <button
+              className={`text-gray-900 dark:text-gray-300 flex dark:text-gray-600 ${selectedTicketIds.length !== 1 ? 'cursor-not-allowed' : ''}`}
+              onClick={() => {
+                if (selectedTicketIds.length !== 1) {
+                  Swal.fire({
+                    icon: 'warning',
+                    title: 'Please select one Ticket',
+                  });
+                }
+              }}
+            >
+              <IoMdEye className="h-6 w-6" />
+              View
+            </button>
+          </Link>
+          <Link to={selectedTicketIds.length === 1 ? `/admin/contrat/${selectedTicketIds}` : '#'}>
+            <button
+              className={`text-gray-900 dark:text-gray-300 flex dark:text-gray-600 ${selectedTicketIds.length !== 1 ? 'cursor-not-allowed' : ''}`}
+              onClick={() => {
+                if (selectedTicketIds.length !== 1) {
+                  Swal.fire({
+                    icon: 'warning',
+                    title: 'Please select one Ticket',
+                  });
+                }
+              }}
+            ><IoMdSettings className="h-6 w-6" />
+              Edit
+
+            </button>
+          </Link>
+          <Link to={selectedTicketIds.length === 1 ? `/admin/contrat/${selectedTicketIds}` : '#'}>
+            <button
+              className={`text-gray-900 dark:text-gray-300 flex dark:text-gray-600 ${selectedTicketIds.length !== 1 ? 'cursor-not-allowed' : ''}`}
+              onClick={() => {
+                if (selectedTicketIds.length !== 1) {
+                  Swal.fire({
+                    icon: 'warning',
+                    title: 'Please select one Ticket',
+                  });
+                }
+              }}
+            ><IoMdDoneAll className="h-6 w-6" />
+              Solved
+            </button>
+          </Link>
+
         </div>
         <br />
         <div className="ml-4 flex flex-wrap items-center space-x-5">
@@ -48,18 +88,6 @@ const FieldTicket = () => {
             className=" text-gray-700    dark:text-gray-300"
           >
             No Ticket:
-          </label>
-          <input
-            type="text"
-            id="search"
-            className="block w-40 rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm text-gray-700 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-            placeholder="Search"
-          />
-          <label
-            htmlFor="search"
-            className=" text-gray-700    dark:text-gray-300"
-          >
-            Equipement S/N :{" "}
           </label>
           <input
             type="text"
@@ -219,14 +247,11 @@ const FieldTicket = () => {
                       {ticket.status}
                     </td>
                     <td className="px-6 py-4">{ticket.equipement_sn}</td>
-
                     <td className="px-6 py-4">{ticket.service_station}</td>
                     <td className="px-6 py-4">{ticket.fault_type}</td>
                     <td className="px-6 py-4">{ticket.response_time}</td>
-
                     <td className="px-6 py-4">{ticket.client}</td>
                     <td className="px-6 py-4">{ticket.created_at}</td>
-
                     <td className="px-6 py-4">{ticket.completion_time}</td>
                     <td className="px-6 py-4">{ticket.technicien}</td>
                     <td className="px-6 py-4">{ticket.timestamp}</td>

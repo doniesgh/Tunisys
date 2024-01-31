@@ -9,7 +9,7 @@ const mongoose = require('mongoose')
     res.status(500).json({ error: error.message });
   }
 }*/
-const getEquipements = async (req, res) => {
+const getEquipementsModal = async (req, res) => {
   try {
 
     const equipements = await Equipement.find()
@@ -19,6 +19,17 @@ const getEquipements = async (req, res) => {
       select: 'service_no effective_date termination_no client contact',
       
     })
+    res.status(200).json(equipements);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+const getEquipements = async (req, res) => {
+  try {
+
+    const equipements = await Equipement.find()
     res.status(200).json(equipements);
   } catch (error) {
     console.error(error);
@@ -240,5 +251,6 @@ module.exports = {
   getEquipement,
   createEquipement,
   deleteEquipement,
-  updateEquipement
+  updateEquipement,
+  getEquipementsModal
 }
