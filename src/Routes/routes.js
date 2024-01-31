@@ -26,11 +26,11 @@ import ListeTechniciens from "views/admin/RecReporte/Components/ListeTechniciens
 import AgenceDetails from "views/admin/client/composants/agence";
 import TicketMangement from "views/admin/ticket/TicketMangement";
 import TicketProcessing from "views/admin/ticket/TicketProcessing";
-import PhoneTicketProcessing from "views/admin/ticket/PhoneTicketProcessing";
-import PhoneTicket from "views/admin/ticket/PhoneTicket";
-import FieldTicket from "views/admin/ticket/FieldTicket";
-import AddFieldTicket from "views/admin/ticket/AddFieldTicket";
-import AddPhoneTicket from "views/admin/ticket/AddPhoneTicket";
+import PhoneTicketProcessing from "views/admin/ticket/PhoneTicket/PhoneTicketProcessing";
+import PhoneTicket from "views/admin/ticket/PhoneTicket/PhoneTicket";
+import FieldTicket from "views/admin/ticket/FieldTicket/FieldTicket";
+import AddFieldTicket from "views/admin/ticket/FieldTicket/AddFieldTicket";
+import AddPhoneTicket from "views/admin/ticket/PhoneTicket/AddPhoneTicket";
 import ManagementEquipement from "views/admin/EquipementManagement/equipement";
 import AddEquipement from "views/admin/EquipementManagement/AddEquipement";
 import EquipementDetails from "views/admin/EquipementManagement/EquipementDetails";
@@ -46,7 +46,7 @@ import Contrat from "views/admin/ClientManagement/CONTRAT/Contrat";
 import Services from "views/admin/ClientManagement/SERVICE/Services";
 import AddService from "views/admin/ClientManagement/SERVICE/AddService";
 import HelpDeskList from "views/Modals/ListeHelpdesk";
-import PhoneTicketDetails from "views/admin/ticket/PhoneTicketDetails";
+//import PhoneTicketDetails from "views/admin/ticket/PhoneTicket/";
 const routes = [
   {
     name: "Acceuil",
@@ -297,14 +297,14 @@ const routes = [
     component: <AddPhoneTicket />,
     allowedRoles: ["COORDINATRICE"],
   },
-  {
+  {/*
     name: "Deatils ",
     layout: "/admin",
     path: "phone/details/:phoneticketId",
     icon: <IoMdAlert className="h-6 w-6" />,
     component: <PhoneTicketDetails />,
     allowedRoles: ["COORDINATRICE"],
-  },
+*/},
   {
     name: "Ticket  Processing",
     layout: "/admin",
