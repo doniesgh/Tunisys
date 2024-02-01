@@ -46,6 +46,7 @@ import Contrat from "views/admin/ClientManagement/CONTRAT/Contrat";
 import Services from "views/admin/ClientManagement/SERVICE/Services";
 import AddService from "views/admin/ClientManagement/SERVICE/AddService";
 import HelpDeskList from "views/Modals/ListeHelpdesk";
+import ServicesDetails from "views/admin/ClientManagement/SERVICE/ServicesDetails";
 //import PhoneTicketDetails from "views/admin/ticket/PhoneTicket/";
 const routes = [
   {
@@ -206,6 +207,14 @@ const routes = [
     path: "client/service/add",
     icon: <MdPerson className="h-6 w-6" />,
     component: <AddService />,
+    allowedRoles: ["COORDINATRICE"],
+  },
+  {
+    name: "Services",
+    layout: "/admin",
+    path: "client/service/:serviceId",
+    icon: <MdPerson className="h-6 w-6" />,
+    component: <ServicesDetails />,
     allowedRoles: ["COORDINATRICE"],
   },
   {
