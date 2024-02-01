@@ -244,7 +244,7 @@ const getServiceById = async (req, res) => {
 };
 
 // Delete a service by ID
-const deleteServiceById = async (req, res) => {
+/*const deleteServiceById = async (req, res) => {
   const { serviceId } = req.params;
 
   try {
@@ -257,7 +257,31 @@ const deleteServiceById = async (req, res) => {
     console.error('Error deleting service by ID:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
+};*/
+const deleteServiceById = async (req, res) => {
+  const { serviceId } = req.params;
+
+  try {
+    const deletedService = await Service.findByIdAndDelete(serviceId);
+    if (!deletedService) {
+      return res.status(404).json({ error: 'Service not found' });
+    }
+
+    // Assuming you have relationships in your Service model
+    const { clientId, equipmentId, contractId } = deletedService;
+
+    // Delete related records
+    await Client.findByIdAndDelete(clientId);
+    await Equipement.findByIdAndDelete(equipmentId);
+    await Contrat.findByIdAndDelete(contractId);
+
+    res.status(200).json(deletedService);
+  } catch (error) {
+    console.error('Error deleting service by ID:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 };
+
 
 module.exports = {
   fetchServices,

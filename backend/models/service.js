@@ -3,14 +3,13 @@ const Schema = mongoose.Schema;
 
 const serviceSchema = new Schema(
   {
-    service_no :{
-    type: String,  
-     required: true,
-     unique: true
-  },
-    model: {
+    service_no: {
       type: String,
       required: true,
+      unique: true
+    },
+    model: {
+      type: String,
     },
     effective_date: Date,
     termination_date: {
@@ -18,28 +17,25 @@ const serviceSchema = new Schema(
       required: true,
     },
     quantity: {
-      type: String,
+      type: Number, // Change the type to Number if quantity is numeric
       required: true,
     },
-    working_hour_start:{
+    working_hour_start: {
       type: String,
     },
     working_hour_end: {
       type: String,
     },
-    response_time_critical:{
-      type:Number
-
+    response_time_critical: {
+      type: Number,
     },
-    response_time_major:{
-      type:Number
-
+    response_time_major: {
+      type: Number,
     },
-    response_time_minor:{
-      type:Number
-
+    response_time_minor: {
+      type: Number,
     },
-    client:[
+    client: [
       {
         type: Schema.Types.ObjectId,
         ref: 'Client',
@@ -60,7 +56,6 @@ const serviceSchema = new Schema(
   },
   { timestamps: true }
 );
-
 
 const Service = mongoose.model('Service', serviceSchema);
 module.exports = Service;

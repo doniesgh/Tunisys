@@ -5,7 +5,7 @@ import { format, differenceInMonths } from 'date-fns';
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import ModifyService from './ModifyService';
-
+import { toast, ToastContainer } from 'react-toastify';
 const Services = () => {
     const [serviceData, setServiceData] = useState([]);
     const [selectedServiceIds, setSelectedServiceIds] = useState([]);
@@ -23,28 +23,42 @@ const Services = () => {
             const updatedIds = prevSelectedIds.includes(serviceId)
                 ? prevSelectedIds.filter((id) => id !== serviceId)
                 : [...prevSelectedIds, serviceId];
-    
-            console.log( updatedIds);
+
+            console.log(updatedIds);
             return updatedIds;
         });
     };
-    
+
     useEffect(() => {
         fetch('/api/service/liste')
             .then(response => response.json())
             .then(data => {
                 setServiceData(data);
-                console.log('Fetched service data:', data); 
+                console.log('Fetched service data:', data);
             })
             .catch(error => console.error('Error fetching service data:', error));
     }, []);
 
-    const handleDeleteClick = () => {
-
+    const handleDeleteClick = async (serviceId) => {
+        try {
+            const response = await fetch(`/api/service/${serviceId}`, {
+                method: 'DELETE',
+            });
+            if (response.ok) {
+                const result = await response.json();
+                toast.success('La suppression a été effectuée avec succès.');
+            } else {
+                throw new Error('Service deletion failed');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            toast.error('Une erreur est survenue lors de la suppression');
+        }
     };
     const [scnquery, setSCNQuery] = useState("");
     return (
         <div>
+            <ToastContainer />
             <div class="mt-9 relative overflow-x-auto shadow-lg sm:rounded-lg">
                 <div className="ml-2 flex items-center flex-wrap space-x-5">
                     <a href='/admin/client/service/add'><button className="dark:text-gray-300 flex text-gray-900 dark:text-gray-600"><IoMdAdd className="h-6 w-6" />Add</button></a>
@@ -74,13 +88,25 @@ const Services = () => {
                                     title: 'Please select one service',
                                 });
                             } else {
-                                handleDeleteClick();
+                                Swal.fire({
+                                    icon: 'question',
+                                    title: 'Are you sure?',
+                                    showCancelButton: true,
+                                    confirmButtonColor: '#3085d6',
+                                    cancelButtonColor: '#d33',
+                                    confirmButtonText: 'Yes, delete it!',
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        handleDeleteClick(selectedServiceIds);
+                                    }
+                                });
                             }
                         }}
                     >
                         <MdDelete className="h-6 w-6" />
                         Delete
                     </button>
+
                 </div>
                 <br />
                 <div className="ml-4 flex items-center flex-wrap space-x-5">
@@ -165,7 +191,7 @@ const Services = () => {
                                         }} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                         <td className="w-4 p-4">
                                             <div className="flex items-center">
-                                            <input
+                                                <input
                                                     id={`checkbox-table-search-${index}`}
                                                     type="checkbox"
                                                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"

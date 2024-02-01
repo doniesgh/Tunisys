@@ -19,7 +19,7 @@ const ServicesDetails = () => {
     console.log(serviceDetails)
     return (
         <>
-            <h1 className="text-[1.7em] text-tunisys-100  mb-2.5 mx-0 text-center font-semibold dark:text-gray-600">{serviceDetails.service_no || 'N/A'} </h1>
+            <h1 className="text-[1.7em] text-tunisys-100  mb-2.5 mx-0 text-center font-semibold dark:text-gray-600">Service No : {serviceDetails.service_no || 'N/A'} </h1>
             <div className='min-w-screen p-5 py-10 rounded-2xl relative shadow-[2px_2px_5px_rgba(0,0,0,0.05)] mx-auto my-5 bg-white dark:bg-gray-900'>
                 <div className=" grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
 
@@ -57,7 +57,7 @@ const ServicesDetails = () => {
                             <ul>
                                 {serviceDetails.equipement.map(equipement => (
                                     <li key={equipement._id}>
-                                {equipement.equipement_sn},
+                                        {equipement.equipement_sn},
                                     </li>
                                 ))}
                             </ul>
