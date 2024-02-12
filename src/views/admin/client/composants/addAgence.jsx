@@ -88,7 +88,7 @@ const AddAgence = ({ handleClose ,client}) => {
                     {error && <div className="error border rounded mx-0 my-5 p-2.5 border-solid bg-red-300">{error}</div>}
                     {successMessage && <div className="success border rounded mx-0 my-5 p-2.5 border-solid bg-green-300">{successMessage}</div>}
                     <button
-                        className="mt-2 rounded bg-gray-500 py-2 px-4 font-bold text-white hover:bg-gray-600"
+                        className="mt-2 rounded bg-gray-500 py-2      px-4 font-bold text-white hover:bg-gray-600"
                         type="button"
                         onClick={handleClose} >Annuler </button>
                 </form>

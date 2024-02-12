@@ -17,7 +17,7 @@ const serviceSchema = new Schema(
       required: true,
     },
     quantity: {
-      type: Number, // Change the type to Number if quantity is numeric
+      type: Number, 
       required: true,
     },
     working_hour_start: {
@@ -41,12 +41,7 @@ const serviceSchema = new Schema(
         ref: 'Client',
       }
     ],
-    equipement: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Equipement',
-      },
-    ],
+    equipement: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Equipement' }], 
     contrat: [
       {
         type: Schema.Types.ObjectId,
@@ -56,6 +51,7 @@ const serviceSchema = new Schema(
   },
   { timestamps: true }
 );
+
 
 const Service = mongoose.model('Service', serviceSchema);
 module.exports = Service;

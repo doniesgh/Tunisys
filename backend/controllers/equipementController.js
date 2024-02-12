@@ -28,30 +28,62 @@ const getEquipementsModal = async (req, res) => {
 
 const getEquipements = async (req, res) => {
   try {
-
     const equipements = await Equipement.find()
+      .populate({
+        path: 'client',
+        select: 'client',
+      })
+      .populate({
+        path: 'contrat',
+        select: 'contrat_sn',
+      })
+      .populate({
+        path: 'service',
+        select: 'service_no ',
+      })
+      .select('modele equipement_sn status equipement_type createdAt');
+
     res.status(200).json(equipements);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
-
-// get a single equipement
+;
 const getEquipement = async (req, res) => {
-  const { id } = req.params
+  const { id } = req.params;
+  
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({error: 'No such equipement'})
-  }
-  const equipement = await Equipement.findById(id)
-
-  if (!equipement) {
-    return res.status(404).json({error: 'No such equipement'})
+    return res.status(404).json({ error: 'No such equipement' });
   }
 
-  res.status(200).json(equipement)
-}
-// create a new equipement
+  try {
+    const equipement = await Equipement.findById(id)
+      .populate({
+        path: 'client',
+        select: 'client',
+      })
+      .populate({
+        path: 'contrat',
+        select: 'contrat_sn',
+      })
+      .populate({
+        path: 'service',
+        select: 'service_no',
+      });
+
+    if (!equipement) {
+      return res.status(404).json({ error: 'No such equipement' });
+    }
+
+    res.status(200).json(equipement);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+
 const createEquipement = async (req, res) => {
   const {
     equipement_sn,

@@ -100,9 +100,8 @@ const ManagementEquipement = () => {
             }
           >
             <button
-              className={`flex text-gray-900 dark:text-gray-300 dark:text-gray-600 ${
-                selectedEquipementIds.length !== 1 ? "cursor-not-allowed" : ""
-              }`}
+              className={`flex text-gray-900 dark:text-gray-300 dark:text-gray-600 ${selectedEquipementIds.length !== 1 ? "cursor-not-allowed" : ""
+                }`}
               onClick={() => {
                 if (selectedEquipementIds.length !== 1) {
                   Swal.fire({
@@ -118,9 +117,8 @@ const ManagementEquipement = () => {
           </Link>
           {/* </Link>    */}
           <button
-            className={`flex text-gray-900 dark:text-gray-300 dark:text-gray-600 ${
-              selectedEquipementIds.length !== 1 ? "cursor-not-allowed" : ""
-            }`}
+            className={`flex text-gray-900 dark:text-gray-300 dark:text-gray-600 ${selectedEquipementIds.length !== 1 ? "cursor-not-allowed" : ""
+              }`}
             onClick={() => {
               if (selectedEquipementIds.length !== 1) {
                 Swal.fire({
@@ -174,31 +172,31 @@ const ManagementEquipement = () => {
                   scope="col"
                   className="px-6 py-3 text-gray-900   dark:text-gray-300"
                 >
-                  Equipement S/N{" "}
+                  Equipement S/N
                 </th>
                 <th
                   scope="col"
                   className="px-6 py-3 text-gray-900    dark:text-gray-300"
                 >
-                  Equipement Type{" "}
+                  Equipement Type
                 </th>
                 <th
                   scope="col"
                   className="px-6 py-3 text-gray-900    dark:text-gray-300"
                 >
-                  Terminal No{" "}
+                  Service No
                 </th>
                 <th
                   scope="col"
                   className="px-6 py-3 text-gray-900    dark:text-gray-300"
                 >
-                  Client{" "}
+                  Client
                 </th>
                 <th
                   scope="col"
                   className="px-6 py-3 text-gray-900    dark:text-gray-300"
                 >
-                  Status{" "}
+                  Status
                 </th>
                 <th
                   scope="col"
@@ -206,6 +204,12 @@ const ManagementEquipement = () => {
                 >
                   Modéle
                 </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-gray-900    dark:text-gray-300"
+                >
+                  Contrat                </th>
+
                 <th
                   scope="col"
                   className="px-6 py-3 text-gray-900    dark:text-gray-300"
@@ -270,23 +274,37 @@ const ManagementEquipement = () => {
                       scope="row"
                       className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
                     >
-                      {equipement.terminal_no}
-                    </td>{" "}
+                      {equipement.service && equipement.service.length > 0 && (
+                        <>
+                          <p>{equipement.service[0].service_no || 'N/A'}</p>
+
+                        </>
+                      )}
+                    </td>
                     <td
                       scope="row"
                       className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
                     >
-                      {equipement.client}{" "}
-                    </td>
+                      {equipement.client && equipement.client.length > 0 && (
+                        <>
+                          <p>{equipement.client[0].client || 'N/A'}</p>
+
+                        </>
+                      )}                    </td>
                     <td className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white">
                       {equipement.status}
                     </td>
                     <td className="px-6 py-4">{equipement.modele} </td>
                     <td className="px-6 py-4">
-                      {/*format(
-                        new Date(equipement.createdAt || "N/A"),
-                        "yyyy/MM/dd"
-                      )*/}
+                    {equipement.contrat && equipement.contrat.length > 0 && (
+                        <>
+                          <p>{equipement.contrat[0].contrat_sn || 'N/A'}</p>
+
+                        </>
+                      )}
+                    </td>
+                    <td className="px-6 py-4">
+                    {equipement.createdAt ? format(new Date(equipement.createdAt), 'yyyy/MM/dd ') : 'N/A'}
                     </td>
                     <td className="px-6 py-4">
                       <button

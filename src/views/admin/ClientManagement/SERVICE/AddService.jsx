@@ -47,6 +47,7 @@ const AddService = () => {
         setEquipementModalOpen(false);
     };
     const handleContratSelection = (contratInfo) => {
+
         setSelectedContratSn(contratInfo.contrat_sn);
         setSelectedContratId(contratInfo._id);
         const formattedEffectiveDate = new Date(contratInfo.effective_date).toISOString().split('T')[0];
@@ -68,10 +69,18 @@ const AddService = () => {
          setselectedEquipementSn(equipementSnsString);
      };*/
     const [selectedEquipementIds, setselectedEquipementIds] = useState([]);
+    /*const handleEquipementSelection = (selectedEquipements) => {
+        const equipementIds = selectedEquipements.map(equipement => equipement._id);
+        setselectedEquipementSn(equipement.equipement_sn)
+        setequipement(equipementIds);
+    };*/
     const handleEquipementSelection = (selectedEquipements) => {
         const equipementIds = selectedEquipements.map(equipement => equipement._id);
+        const equipementSns = selectedEquipements.map(equipement => equipement.equipement_sn); 
+        setselectedEquipementSn(equipementSns.join(', ')); 
         setequipement(equipementIds);
     };
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
         const clients = {
@@ -148,7 +157,7 @@ const AddService = () => {
                                 <input
                                     type="text"
                                     placeholder={selectedContratSn ? selectedContratSn : ''}
-                                    value={selectedContratId ? selectedContratId : ''}
+                                    value={selectedContratSn ? selectedContratSn : ''}
                                     onClick={openContratModal}
                                     className="block w-full border-red-700 rounded-md border-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 cursor-pointer"
                                 />
@@ -180,8 +189,8 @@ const AddService = () => {
                                 <input
                                     type="text"
                                     onClick={openEquipementModal}
-                                    placeholder={selectedEquipementIds.length > 0 ? selectedEquipementIds.join(', ') : ''}
-                                    value={selectedEquipementSn.length > 0 ? selectedEquipementSn.join(', ') : ''}
+                                    placeholder={selectedEquipementSn }
+                                    value={selectedEquipementSn}
                                     readOnly
                                     className="block w-full border-red-700 rounded-md border-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 cursor-pointer"
                                 />

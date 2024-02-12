@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { format, differenceInMonths } from 'date-fns';
 const EquipementList = ({ handleClose, handleEquipementSelection }) => {
     const [equipementData, setEquipementData] = useState([]);
-    
+    const [isEquipementModalOpen, setEquipementModalOpen] = useState(false);
+
     const fetchEquipements = async () => {
         try {
             const response = await fetch('/api/equi/list');
@@ -24,6 +25,7 @@ const EquipementList = ({ handleClose, handleEquipementSelection }) => {
         handleEquipementSelection(equipement)
         handleClose();
     }
+    
     const [scnquery, setSCNQuery] = useState("");
     return (
         <div className="fixed top-0 left-0 z-10 flex h-full w-full items-center justify-center " >

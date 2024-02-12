@@ -16,7 +16,7 @@ export const authReducer = (state, action) => {
 };
 export const AuthContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, { user: null });
-  const [loading, setLoading] = useState(true); // Introduce loading state
+  const [loading, setLoading] = useState(true);
 
   const login = (user) => {
     dispatch({ type: 'LOGIN', payload: user });
@@ -32,14 +32,14 @@ export const AuthContextProvider = ({ children }) => {
     if (user) {
       login(user);
     }
-    setLoading(false); // Set loading to false after fetching user data
+    setLoading(false);
   }, []);
 
   console.log('AuthContext state:', state);
 
   return (
     <AuthContext.Provider value={{ ...state, login, logout, dispatch }}>
-      {!loading && children} {/* Render children only when loading is false */}
+      {!loading && children} 
     </AuthContext.Provider>
   );
 };

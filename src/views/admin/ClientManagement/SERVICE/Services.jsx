@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { IoMdAdd, IoMdDoneAll, IoMdEye, IoMdMedkit, IoMdSave, IoMdSettings, IoMdShare } from 'react-icons/io'
-import { MdDelete, MdEdit, MdPersonAdd } from 'react-icons/md'
+import { MdAtm, MdDelete, MdEdit, MdPersonAdd } from 'react-icons/md'
 import { format, differenceInMonths } from 'date-fns';
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import ModifyService from './ModifyService';
 import { toast, ToastContainer } from 'react-toastify';
+import ModifyEquipement from './EditEquipement';
 const Services = () => {
     const [serviceData, setServiceData] = useState([]);
     const [selectedServiceIds, setSelectedServiceIds] = useState([]);
     const [selectedService, setSelectedService] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isModalEquipmentOpen, setIsModalEquipmentOpen] = useState(false);
     const handleCloseModal = () => {
         setIsModalOpen(false);
     };
@@ -18,15 +20,25 @@ const Services = () => {
         setSelectedService(selectedService);
         setIsModalOpen(true);
     }
-    const handleCheckboxChange = (serviceId) => {
-        setSelectedServiceIds((prevSelectedIds) => {
-            const updatedIds = prevSelectedIds.includes(serviceId)
-                ? prevSelectedIds.filter((id) => id !== serviceId)
-                : [...prevSelectedIds, serviceId];
+    const handleCloseEquipemntModal = () => {
+        setIsModalEquipmentOpen(false);
+    };
 
-            console.log(updatedIds);
-            return updatedIds;
+    const handleOpenEquipemntModal = (selectedService) => {
+        setSelectedService(selectedService);
+        setIsModalEquipmentOpen(true);
+    }
+
+    const handleCheckboxChange = serviceId => {
+        setSelectedServiceIds(prevSelectedIds => {
+            if (prevSelectedIds.includes(serviceId)) {
+                return prevSelectedIds.filter(id => id !== serviceId);
+            } else {
+                return [...prevSelectedIds, serviceId];
+            }
         });
+        console.log(serviceId)
+
     };
 
     useEffect(() => {
@@ -79,6 +91,26 @@ const Services = () => {
                             View
                         </button>
                     </Link>
+                    <button
+                        className={`text-gray-900 dark:text-gray-300 flex dark:text-gray-600 ${selectedServiceIds.length !== 1 ? 'cursor-not-allowed' : ''}`}
+                        onClick={() => {
+                            if (selectedServiceIds.length !== 1) {
+                                Swal.fire({
+                                    icon: 'warning',
+                                    title: 'Please select one service',
+                                });
+                            } else {
+                                const selectedService = serviceData.find(service => service._id === selectedServiceIds[0]);
+                                handleOpenEquipemntModal(selectedService);
+                            }
+                        }}
+                    >
+                        <MdAtm className="h-6 w-6" />
+                        Equipement
+                    </button>
+
+
+
                     <button
                         className={`text-gray-900 dark:text-gray-300 flex dark:text-gray-600 ${selectedServiceIds.length !== 1 ? 'cursor-not-allowed' : ''}`}
                         onClick={() => {
@@ -232,8 +264,11 @@ const Services = () => {
                                 ))}
                         </tbody>
                     </table>
-                    {isModalOpen && <ModifyService handleClose={handleCloseModal} contrat={selectedService} />
+                    {isModalOpen && <ModifyService handleClose={handleCloseModal} service={selectedService} />
                     }
+                    {isModalEquipmentOpen && <ModifyEquipement handleClose={handleCloseEquipemntModal} service={selectedService} />}
+
+
                 </div>
             </div>
 

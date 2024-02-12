@@ -23,7 +23,7 @@ const TechSidebar = ({ open, onClose }) => {
         <img src={tunisys} alt='tunisys' className={`w-[140px] mt-6 h-12`}/>
         
       </div>
-      <div class="mt-[30px] mb-7 h-px bg-gray-300 dark:bg-white/30" />
+      <div className="mt-[30px] mb-7 h-px bg-gray-300 dark:bg-white/30" />
 
       <ul className="mb-auto pt-1">
         <Links routes={helpdekroutes} />

@@ -8,15 +8,11 @@ const contratSchema = new Schema(
       required: true,
       unique: true,
     },
-    service_cn: {
-      type: String,
-      required: true,
-      unique: true,
-    },
-    attachement: {
+    attachement: [{
+      url: {
         type: String,
-        default: "",
-    },
+      },
+    }],
     effective_date: Date,
     termination_date: {
       type: Date,
@@ -38,7 +34,7 @@ const contratSchema = new Schema(
   { timestamps: true }
 );
 
-contratSchema.index({ contrat_sn: 1, service_cn: 1 }, { unique: true });
+contratSchema.index({ contrat_sn: 1,service:1 }, { unique: true });
 
 const Contrat = mongoose.model('Contrat', contratSchema);
 module.exports = Contrat;

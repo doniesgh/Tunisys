@@ -2,154 +2,117 @@ const Contrat = require('../models/contrat');
 const Service = require('../models/service');
 const Equipement = require('../models/equipement');
 const Client = require('../models/client');
-
 const mongoose = require('mongoose');
+const getEquipmentByServiceId = async (req, res) => {
+  const { serviceId } = req.params;
+
+  try {
+    // Find the service by ID
+    const service = await Service.findById(serviceId);
+    if (!service) {
+      return res.status(404).json({ error: 'Service not found' });
+    }
+
+    // Get the equipment associated with the service
+    const equipment = await Equipement.find({ service: serviceId });
+
+    res.status(200).json(equipment);
+  } catch (error) {
+    console.error('Error getting equipment by service ID:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
 const addService = async (req, res) => {
   try {
-    const { service_no, effective_date, termination_date, model, quantity, equipement, contrat, client, working_hour_start,
-      working_hour_end,
-      response_time_critical,
-      response_time_major,
-      response_time_minor
-    } = req.body;
-    let emptyFields = [];
-    if (!service_no) {
-      emptyFields.push("service_no");
-    }
-    if (!effective_date) {
-      emptyFields.push("effective_date");
-    }
-  
-    if (!termination_date) {
-      emptyFields.push("termination_date");
-    }
-  
-    if (!model) {
-      emptyFields.push("model");
-    }
-  
-    if (!client) {
-      emptyFields.push("client");
-    }
-  
-    if (!quantity) {
-      emptyFields.push("quantity");
-    }
-  
-    if (!equipement) {
-      emptyFields.push("equipement");
-    }
-    if (!contrat) {
-      emptyFields.push("contrat");
-    }
-  
-    if (!client) {
-      emptyFields.push("client");
-    }
-    if (!quantity) {
-      emptyFields.push("quantity");
-    }
-  
-    if (!working_hour_start) {
-      emptyFields.push("working_hour_start");
-    }
+    const { service_no, effective_date, termination_date, model, quantity, equipement, contrat, client, working_hour_start, working_hour_end, response_time_critical, response_time_major, response_time_minor } = req.body;
 
-    if (!working_hour_end) {
-      emptyFields.push("working_hour_end");
-    }
-  
-    if (!response_time_critical) {
-      emptyFields.push("response_time_critical");
-    }
-     
-    if (!response_time_major) {
-      emptyFields.push("response_time_major");
-    }
-     
-    if (!response_time_minor) {
-      emptyFields.push("response_time_minor");
-    }
+    // Check for empty fields
+    const requiredFields = ['service_no', 'effective_date', 'termination_date', 'model', 'quantity', 'equipement', 'contrat', 'client', 'working_hour_start', 'working_hour_end', 'response_time_critical', 'response_time_major', 'response_time_minor'];
+    const emptyFields = requiredFields.filter(field => !req.body[field]);
+
     if (emptyFields.length > 0) {
-      return res
-        .status(400)
-        .json({ error: "Veuillez remplir tous les champs.", emptyFields });
+      return res.status(400).json({ error: "Please fill in all required fields.", emptyFields });
     }
 
-    console.log('Received data:', req.body);
+    // Check if the equipment exists
+    const equipementExistsPromises = equipement.map(equipId => Equipement.findById(equipId));
+    const equipementExistsResults = await Promise.all(equipementExistsPromises);
 
-    if (!service_no || !quantity || !equipement || !contrat || !model || !effective_date || !termination_date || !client
-      || !working_hour_start
-      || !working_hour_end
-      || !response_time_critical
-      || !response_time_major
-      || !response_time_minor) {
-      return res.status(400).json({ error: 'All required fields must be filled' });
+    if (equipementExistsResults.some(equip => !equip)) {
+      return res.status(404).json({ error: 'One or more equipment not found' });
     }
 
-    const equipementExists = await Equipement.findById(equipement);
-
-    if (!equipementExists) {
-      return res.status(404).json({ error: 'Equipement not found' });
+    // Check if client exists and if service is already associated with a client
+    const existingServiceForClient = await Service.findOne({ client });
+    if (existingServiceForClient) {
+      return res.status(400).json({ error: 'A service is already associated with this client' });
     }
+
+    // Check if contract exists and if service is already associated with a contract
+    const existingServiceForContrat = await Service.findOne({ contrat });
+    if (existingServiceForContrat) {
+      return res.status(400).json({ error: 'A service is already associated with this contract' });
+    }
+
     const clientExists = await Client.findById(client);
-
-    if (!clientExists) {
-      return res.status(404).json({ error: 'client not found' });
-    }
     const contratExists = await Contrat.findById(contrat);
 
+    if (!clientExists) {
+      return res.status(404).json({ error: 'Client not found' });
+    }
     if (!contratExists) {
       return res.status(404).json({ error: 'Contrat not found' });
     }
 
+    // Validate effective_date and termination_date
+    if (effective_date >= termination_date) {
+      return res.status(400).json({ error: 'Effective date must be before or equal to termination date' });
+    }
+
+    // Check for uniqueness of service_no
+    const isServiceNoUnique = await Service.findOne({ service_no });
+    if (isServiceNoUnique) {
+      return res.status(400).json({ error: 'Service number must be unique' });
+    }
+
+    // Create new Service
     const newService = new Service({
       service_no,
-      working_hour_start,
-      working_hour_end,
-      response_time_critical,
-      response_time_major,
-      response_time_minor,
       effective_date,
       termination_date,
       model,
       quantity,
       contrat: contratExists._id,
-      equipement: equipementExists._id,
-      client: clientExists._id
+      equipement: equipementExistsResults.map(equip => equip._id), // Assigning array of equipment IDs
+      client: clientExists._id,
+      working_hour_start,
+      working_hour_end,
+      response_time_critical,
+      response_time_major,
+      response_time_minor
     });
 
     const savedService = await newService.save();
 
-    contratExists.service = contratExists.service || [];
-    equipementExists.service = equipementExists.service || [];
+    // Update contrat and client with service
+    contratExists.service = savedService._id;
+    clientExists.service = savedService._id;
+    await Promise.all([contratExists.save(), clientExists.save()]);
 
-    if (Array.isArray(contratExists.service)) {
-      contratExists.service.push(savedService._id);
-      await contratExists.save();
-    } else {
-      console.error('contratExists.services is not an array:', contratExists.service);
-      return res.status(500).json({ error: 'Internal Server Error' });
-    }
-
-    if (Array.isArray(equipementExists.service)) {
-      equipementExists.service.push(savedService._id);
-      await equipementExists.save();
-    } else {
-      console.error('equipementExists.service is not an array:', equipementExists.service);
-      return res.status(500).json({ error: 'Internal Server Error' });
-    }
-    if (Array.isArray(clientExists.service)) {
-      clientExists.service.push(savedService._id);
-      await clientExists.save();
-    } else {
-      console.error('clientExists.service is not an array:', equipementExists.service);
-      return res.status(500).json({ error: 'Internal Server Error' });
-    }
+    // Update each equipment with service, client, and contrat
+    const updateEquipmentsPromises = equipementExistsResults.map(async equip => {
+      equip.service = savedService._id;
+      equip.client = clientExists._id;
+      equip.contrat = contratExists._id;
+      await equip.save();
+    });
+    await Promise.all(updateEquipmentsPromises);
 
     const response = {
       service: savedService,
       contrat: contratExists._id,
-      equipement: equipementExists._id,
+      equipement: equipementExistsResults.map(equip => equip._id), // Assigning array of equipment IDs
       client: clientExists._id,
     };
 
@@ -162,16 +125,9 @@ const addService = async (req, res) => {
       return res.status(400).json({ error: 'Validation failed', errors: validationErrors });
     }
 
-    if (error.code === 11000) {
-      return res
-        .status(400)
-        .json({ error: 'Service_no must be unique' });
-    }
-
     return res.status(500).json({ error: 'Internal Server Error' });
   }
 };
-
 
 
 const fetchServices = async (req, res) => {
@@ -243,21 +199,6 @@ const getServiceById = async (req, res) => {
   }
 };
 
-// Delete a service by ID
-/*const deleteServiceById = async (req, res) => {
-  const { serviceId } = req.params;
-
-  try {
-    const deletedService = await Service.findByIdAndDelete(serviceId);
-    if (!deletedService) {
-      return res.status(404).json({ error: 'Service not found' });
-    }
-    res.status(200).json(deletedService);
-  } catch (error) {
-    console.error('Error deleting service by ID:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-};*/
 const deleteServiceById = async (req, res) => {
   const { serviceId } = req.params;
 
@@ -281,13 +222,54 @@ const deleteServiceById = async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
+/*const updateServiceById = async (req, res) => {
+  const { serviceId } = req.params;
+  const updatedServiceData = req.body;
+
+  try {
+    const updatedService = await Service.findByIdAndUpdate(serviceId, updatedServiceData, { new: true });
+    if (!updatedService) {
+      return res.status(404).json({ error: 'Service not found' });
+    }
+    
+    res.status(200).json(updatedService);
+  } catch (error) {
+    console.error('Error updating service by ID:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};*/
+const updateServiceById = async (req, res) => {
+  const { serviceId } = req.params;
+  const updatedServiceData = req.body;
+
+  try {
+    if (updatedServiceData.service_no) {
+      const existingService = await Service.findOne({ service_no: updatedServiceData.service_no });
+      if (existingService && existingService._id.toString() !== serviceId) {
+        return res.status(400).json({ error: 'Service number must be unique' });
+      }
+    }
+
+    const updatedService = await Service.findByIdAndUpdate(serviceId, updatedServiceData, { new: true });
+    if (!updatedService) {
+      return res.status(404).json({ error: 'Service not found' });
+    }
+    
+    res.status(200).json(updatedService);
+  } catch (error) {
+    console.error('Error updating service by ID:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
 
 
 module.exports = {
+  updateServiceById, 
   fetchServices,
   addService,
   getAllServices,
   getServiceById,
   deleteServiceById,
-  fetchServiceById
+  fetchServiceById,
+  getEquipmentByServiceId
 };

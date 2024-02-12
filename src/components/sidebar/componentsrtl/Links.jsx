@@ -54,7 +54,7 @@ export function SidebarLinks(props) {
                 </p>
               </li>
               {activeRoute(route.path) ? (
-                <div class="absolute top-px h-9 w-1 rounded-lg bg-tunisys-100 end-0 dark:bg-tunisys-100" />
+                <div className="absolute top-px h-9 w-1 rounded-lg bg-tunisys-100 end-0 dark:bg-tunisys-100" />
               ) : null}
             </div>
           </Link>
@@ -62,7 +62,6 @@ export function SidebarLinks(props) {
       }
     });
   };
-  // BRAND
   return createLinks(routes);
 }
 

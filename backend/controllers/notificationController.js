@@ -6,7 +6,7 @@ const getNotification = async (req, res) => {
         const userId = req.user._id; 
         const notifications = await Notification.find({ receiverId: userId }).sort({ createdAt: -1 });
         res.json( {notifications} );
-      } catch (error) {
+      } catch (error) { 
         res.status(500).json({ message: 'Internal Server Error' });
       }
   }

@@ -154,12 +154,12 @@ const Navbar = (props) => {
         </span>
         <Dropdown
           button={
-            <p className="cursor-pointer">
+            <div className="relative">
               <div className="counter bg-red-700 border w-[19px] h-[19px] rounded-[50%] ml-2 mt-[-15px]">
                 <p className="text-[13px] text-white text-center">{notifications.length || 0}</p>
               </div>
               <IoMdNotificationsOutline className="h-4 w-4 text-gray-600 dark:text-white" />
-            </p>
+            </div>
           }
           animation="origin-[65%_0%] md:origin-top-right transition-all duration-300 ease-in-out"
           children={
@@ -170,11 +170,10 @@ const Navbar = (props) => {
                 </p>
               </div>
               <div className="notification-scroll max-h-48 overflow-y-auto">
-
-                {notifications.length > 0 ? (notifications
-                  .map((notification) => (
-                    <button className="flex w-full space-x-1 items-center" key={notification._id}>
-                      <div className="flex-shrink-0  h-6 w-6 mr-2 bg-red-500 text-white rounded-full flex items-center justify-center">
+                {notifications.length > 0 ? (
+                  notifications.map((notification) => (
+                    <div className="flex w-full space-x-1 items-center" key={notification._id}>
+                      <div className="flex-shrink-0 h-6 w-6 mr-2 bg-red-500 text-white rounded-full flex items-center justify-center">
                         <IoMdNotificationsOutline className="h-4 w-4" />
                       </div>
                       <p className="text-sm text-navy-700 dark:text-white">{notification.message}</p>
@@ -192,17 +191,15 @@ const Navbar = (props) => {
                           onClick={() => handleDeleteNotification(notification._id)}
                         />
                       </button>
-                    </button>
+                    </div>
                   ))
                 ) : (
                   <p className="text-sm text-navy-700 dark:text-white">Pas de notifications</p>
                 )}
-
-
               </div>
             </div>
           }
-          classNames={"py-2 top-4 -left-[230px] md:-left-[440px] w-max"}
+          classNames="py-2 top-4 -left-[230px] md:-left-[440px] w-max"
         />
 
         <div
@@ -253,7 +250,7 @@ const Navbar = (props) => {
               </div>
             </div>
           }
-          classNames={"py-2 top-8 -left-[180px] w-max"}
+          className={"py-2 top-8 -left-[180px] w-max"}
         />
       </div>
     </nav>

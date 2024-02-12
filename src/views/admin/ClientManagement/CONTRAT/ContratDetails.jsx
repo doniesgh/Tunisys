@@ -1,13 +1,37 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { format, isValid } from 'date-fns';
+import AttachmentsModal from './ModifierAttachement';
 
 const ContratDetails = () => {
     const { contratId } = useParams();
     const [contratDetails, setContratDetails] = useState([]);
     console.log('id', contratId)
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [attachments, setAttachments] = useState([]);
     const [isFullScreen, setIsFullScreen] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    useEffect(() => {
+        const handleImageClick = () => {
+            setIsFullScreen(!isFullScreen);
+        };
+
+        document.addEventListener('keydown', handleKeyPress);
+
+        return () => {
+            document.removeEventListener('keydown', handleKeyPress);
+        };
+    }, [isFullScreen]);
+
+    const handleKeyPress = (e) => {
+        if (e.key === 'Escape') {
+            setIsFullScreen(false);
+        }
+    };
+
+    const handleCloseFullScreen = () => {
+        setIsFullScreen(false);
+    };
 
     useEffect(() => {
         if (contratId) {
@@ -26,6 +50,25 @@ const ContratDetails = () => {
         setIsFullScreen(!isFullScreen);
     };
 
+
+    const handleOpenModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+    };
+    const handleDeleteAttachment = (attachmentId) => {
+        // Implement logic to delete the attachment with attachmentId
+        console.log('Deleting attachment with ID:', attachmentId);
+    };
+
+    const handleAddAttachments = (newAttachments) => {
+        // Implement logic to add newAttachments
+        console.log('Adding new attachments:', newAttachments);
+    };
+
+
     return (
         <>
             <h1 className="text-[1.7em] text-tunisys-100  mb-2.5 mx-0 text-center font-semibold dark:text-gray-600"> {contratDetails.contrat_sn}</h1>
@@ -37,9 +80,7 @@ const ContratDetails = () => {
                             {contratDetails.contrat_sn}
                         </p>
                     </div>
-                    <div className="sm:col-span-3">
-                        <p className="mb-1 text-gray-900 dark:text-gray-200"><strong>service_cn :</strong> {contratDetails.service_cn}</p>
-                    </div>
+
                     <div className="sm:col-span-3">
                         <p className="mb-1 text-gray-900 dark:text-gray-200"><strong>effective_date : </strong>
                             {isValid(new Date(contratDetails.effective_date)) ? format(new Date(contratDetails.termination_date), 'yyyy/MM/dd') : 'N/A'}
@@ -52,6 +93,12 @@ const ContratDetails = () => {
                         </p>
 
                     </div>
+                    <div className="sm:col-span-3">
+                        <p className="mb-1 text-gray-900 dark:text-gray-200">
+                            <strong>Services : {contratDetails.service?.length || 0} </strong>
+                        </p>
+                    </div>
+
                     <div className="sm:col-span-3">
                         <p className="mb-1 text-gray-900 dark:text-gray-200">
                             <strong>Client: </strong>
@@ -87,37 +134,63 @@ const ContratDetails = () => {
                         )}
                     </div>
                     <div className="sm:col-span-3">
-                        <p className="mb-1 text-gray-900 dark:text-gray-200"><strong>attachement : </strong> <img
-                            src={contratDetails.attachement}
-                            style={{ width: '200px', height: '200px' }}
-                            alt='logo'
-                            className='rounded' 
-                            onClick={handleImageClick}
-                            /></p>
-                            {isFullScreen && (
+                        <p className="mb-1 text-gray-900 dark:text-gray-200">
+                            <strong>Attachements:</strong>
+                            {contratDetails.attachement && contratDetails.attachement.length > 0 ? (
+                                contratDetails.attachement.map((attachment, index) => (
+                                    <img
+                                        key={index}
+                                        src={attachment.url} // Assuming the URL is stored in the 'url' property
+                                        style={{ width: '200px', height: '200px' }}
+                                        alt={`Attachment ${index + 1}`}
+                                        className='rounded'
+                                        onClick={() => handleImageClick(attachment.url)}
+                                    />
+                                ))
+                            ) : (
+                                <span className='text-red-500'>You don't have any attachments.</span>
+                            )}
+                        </p>
+
+
+                        {isFullScreen && (
                             <div
                                 className="fixed inset-0 z-50 flex items-center justify-center bg-black"
                                 style={{ background: 'rgba(0, 0, 0, 0.7)' }}
-                                onClick={handleImageClick}
+                                onClick={handleCloseFullScreen}
                             >
-                                <img
-                                    src={contratDetails.attachement}
-                                    style={{ maxWidth: '90%', maxHeight: '90%', cursor: 'pointer' }}
-                                    alt='logo'
-                                />
+                                {contratDetails.attachement.map((attachment, index) => (
+                                    <img
+                                        key={index}
+                                        src={attachment.url} 
+                                        style={{ maxWidth: '90%', maxHeight: '90%', cursor: 'pointer' }}
+                                        alt={`Attachment ${index + 1}`}
+                                        onClick={() => handleImageClick(attachment.url)}
+                                    />
+                                ))}
                             </div>
                         )}
-                    </div>
-                    <div className="sm:col-span-3">
-                        <p className="mb-1 text-gray-900 dark:text-gray-200">
-                            <strong>Services : {contratDetails.service?.length || 0} </strong>
-                        </p>
+
                     </div>
 
-                    
-                        </div>
-                <div>
                 </div>
+                <div>
+
+                </div>
+                <div className="flex justify-end">
+                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={handleOpenModal}>
+                        Modifier Attachment
+                    </button>
+                    <div>
+                        {isModalOpen && <AttachmentsModal handleClose={handleCloseModal}
+                            existingAttachments={contratDetails.attachement || []}
+                            onDeleteAttachment={handleDeleteAttachment}
+                            onAddAttachments={handleAddAttachments}
+                        />}
+
+                    </div>
+                </div>
+
             </div>
 
         </>)

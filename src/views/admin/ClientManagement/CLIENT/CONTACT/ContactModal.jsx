@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
-import { IoMdAdd, IoMdDoneAll, IoMdEye, IoMdMedkit, IoMdSave, IoMdSettings, IoMdShare } from 'react-icons/io'
+import { IoMdAdd } from 'react-icons/io'
 import { MdDelete, MdEdit, MdPersonAdd } from 'react-icons/md'
 import AddContact from './AddContact'
 import ModifyContact from './ModifyContact';

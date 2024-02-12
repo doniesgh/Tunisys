@@ -3,12 +3,11 @@ import { useState, useEffect, useMemo } from "react";
 import { useAuthContext } from 'views/auth/hooks/useAuthContext'
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import ClientList from './ClientList';
+import ClientList from './../../../Modals/ClientList';
 import { MdList, MdShower } from 'react-icons/md';
 const AddContrat = () => {
     const { user } = useAuthContext()
     const [client, setClient] = useState('')
-    const [service_cn, setservice_cn] = useState('')
     const [contrat_sn, setcontrat_sn] = useState('')
     const [effective_date, seteffective_date] = useState('')
     const [termination_date, settermination_date] = useState('')
@@ -33,9 +32,10 @@ const AddContrat = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = () => {
-            setAttachement(reader.result);
+          setAttachement([{ url: reader.result }]);
         };
-    };
+      };
+      
     const openClientModal = () => {
         setClientModalOpen(true);
     };
@@ -56,7 +56,6 @@ const AddContrat = () => {
 
         const clients = {
             client: selectedClientId,
-            service_cn,
             contrat_sn,
             effective_date, termination_date, attachement
         };
@@ -84,7 +83,6 @@ const AddContrat = () => {
             if (response.ok) {
                 setEmptyFields([]);
                 setClient('');
-                setservice_cn('');
                 setcontrat_sn('');
                 seteffective_date('');
                 settermination_date('');
@@ -102,7 +100,6 @@ const AddContrat = () => {
     const handleReset = () => {
         setEmptyFields([]);
         setClient('');
-        setservice_cn('');
         setcontrat_sn('');
         seteffective_date('');
         settermination_date('');
@@ -148,15 +145,7 @@ const AddContrat = () => {
                             </div>
                         </div>
 
-                        <div className="sm:col-span-3">
-                            <label htmlFor="service_cn" className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-600">Service Contrat No</label>
-                            <div className="">
-                                <input type="text"
-                                    value={service_cn}
-                                    onChange={(e) => setservice_cn(e.target.value)}
-                                    className="block w-full border-red-700 rounded-md border-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
-                            </div>
-                        </div>
+
                         <div className="sm:col-span-3">
                             <label htmlFor="effective_date" className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-600">Effective Date</label>
                             <div className="">
