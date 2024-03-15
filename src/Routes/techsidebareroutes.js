@@ -1,12 +1,10 @@
 import { IoMdAlert } from "react-icons/io";
-import { MdHistory, MdHome, MdList, MdPerson } from "react-icons/md";
+import { MdAirplaneTicket, MdHistory, MdHome, MdList, MdPerson } from "react-icons/md";
 import Home from "views/technicien/home";
-import ManageReclamation from "views/technicien/reclamation";
 import History from "views/technicien/historique";
 import Profil from "views/technicien/profil";
-import Intervention from "views/technicien/intervention";
-import ListeIntervention from "views/technicien/intervention";
-import FicheIntervention from "views/technicien/ficheintervention";
+import TicketAssigned from "views/technicien/TicketAssigned/TicketAssignedPhone";
+import Intervention from "views/technicien/intervention/intervention";
 //import Intervention from "views/technicien/reclamation/components/intervention";
 
 const techsideroutes = [
@@ -20,23 +18,15 @@ const techsideroutes = [
 
       },
       {
-        name: "Réclamtions",
+        name: "Tickets",
         layout: "/tech",
-        path: "reclamation",
-        icon: <IoMdAlert className="h-6 w-6" />,
-        component: <ManageReclamation />,
+        path: "ticket",
+        icon: <MdAirplaneTicket className="h-6 w-6" />,
+        component: <TicketAssigned />,
         allowedRoles: ['TECHNICIEN'] // Liste des rôles autorisés pour accéder à cette route
 
       },
-      /*{
-        name: "Réclamtions",
-        layout: "/tech",
-        path: "fiche",
-        icon: <IoMdAlert className="h-6 w-6" />,
-        component: <FicheIntervention />,
-        allowedRoles: ['TECHNICIEN'] // Liste des rôles autorisés pour accéder à cette route
-
-      },*/
+    
       {
         name: "historique",
         layout: "/tech",
@@ -46,15 +36,7 @@ const techsideroutes = [
         allowedRoles: ['TECHNICIEN'] // Liste des rôles autorisés pour accéder à cette route
 
       },
-      {
-        name: "intervention",
-        layout: "/tech",
-        path: "intervention",
-        icon: <MdList className="h-6 w-6" />,
-        component: <ListeIntervention />,
-        allowedRoles: ['TECHNICIEN'] // Liste des rôles autorisés pour accéder à cette route
-
-      },
+    
       {
         name: "profil",
         layout: "/tech",

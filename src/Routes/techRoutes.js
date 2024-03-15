@@ -2,13 +2,14 @@ import { MdHistory, MdHome, MdList, MdPerson } from "react-icons/md";
 import { IoMdAlert } from "react-icons/io";
 
 import Home from "views/technicien/home";
-import ManageReclamation from "views/technicien/reclamation";
 import History from "views/technicien/historique";
 import Profil from "views/technicien/profil";
 import ModifierProfile from "views/technicien/profil/components";
-import Intervention from "views/technicien/reclamation/components/intervention";
-import ListeIntervention from "views/technicien/intervention";
-import FicheIntervention from "views/technicien/ficheintervention";
+import TicketAssigned from "views/technicien/TicketAssigned/TicketAssignedPhone";
+import TicketAssignedField from "views/technicien/TicketAssigned/TicketAssignedField";
+import PhoneticketDetails from "views/technicien/TicketAssigned/PhoneTicketDetails";
+import FieldDetails from "views/technicien/TicketAssigned/FieldTicketDetails";
+import Intervention from "views/technicien/intervention/intervention";
 
 const techroutes = [
   {
@@ -30,12 +31,21 @@ const techroutes = [
 
       },
       {
-        name: "Réclamtions",
+        name: "Tickets",
         layout: "/tech",
-        path: "reclamation",
+        path: "ticket",
         icon: <IoMdAlert className="h-6 w-6" />,
-        component: <ManageReclamation />,
+        component: <TicketAssigned />,
         allowedRoles: ['TECHNICIEN'] // Liste des rôles autorisés pour accéder à cette route
+
+      },
+      {
+        name: "Tickets",
+        layout: "/tech",
+        path: "field",
+        icon: <IoMdAlert className="h-6 w-6" />,
+        component: <TicketAssignedField />,
+        allowedRoles: ['TECHNICIEN'] 
 
       },
       {
@@ -47,21 +57,13 @@ const techroutes = [
         allowedRoles: ['TECHNICIEN'] 
 
       },
-      {
-        name: "historique",
-        layout: "/tech",
-        path: "fiche",
-        icon: <MdHistory className="h-6 w-6" />,
-        component: <FicheIntervention />,
-        allowedRoles: ['TECHNICIEN'] 
-
-      },
+   
       {
         name: "intervention",
         layout: "/tech",
-        path: "intervention",
+        path: "intervention/:ticketId",
         icon: <MdList className="h-6 w-6" />,
-        component: <ListeIntervention />,
+        component: <Intervention />,
         allowedRoles: ['TECHNICIEN'] 
 
       },
@@ -80,6 +82,24 @@ const techroutes = [
         path: "modifier",
         icon: <MdPerson className="h-6 w-6" />,
         component: <ModifierProfile />,
+        allowedRoles: ['TECHNICIEN'] // Liste des rôles autorisés pour accéder à cette route
+
+      },
+      {
+        name: "Phone",
+        layout: "/tech",
+        path: "phone/:ticketId",
+        icon: <MdPerson className="h-6 w-6" />,
+        component: <PhoneticketDetails />,
+        allowedRoles: ['TECHNICIEN'] // Liste des rôles autorisés pour accéder à cette route
+
+      },
+      {
+        name: "Field",
+        layout: "/tech",
+        path: "field/:ticketId",
+        icon: <MdPerson className="h-6 w-6" />,
+        component: <FieldDetails />,
         allowedRoles: ['TECHNICIEN'] // Liste des rôles autorisés pour accéder à cette route
 
       },

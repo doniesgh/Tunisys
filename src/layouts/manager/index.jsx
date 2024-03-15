@@ -73,7 +73,6 @@ export default function Manager(props) {
           <div className="h-full">
             <Navbar
               onOpenSidenav={() => setOpen(true)}
-              logoText={"Horizon UI Tailwind React"}
               brandText={currentRoute}
               secondary={getActiveNavbar(routes)}
               {...rest}

@@ -23,9 +23,8 @@ import History from "views/admin/History";
 import NoAccess from "layouts/noaccess";
 import RecRep from "views/admin/RecReporte";
 import ListeTechniciens from "views/admin/RecReporte/Components/ListeTechniciens";
-import AgenceDetails from "views/admin/client/composants/agence";
 import TicketMangement from "views/admin/ticket/TicketMangement";
-import TicketProcessing from "views/admin/ticket/TicketProcessing";
+import TicketProcessing from "views/admin/ticket/FieldTicket/TicketProcessing";
 import PhoneTicketProcessing from "views/admin/ticket/PhoneTicket/PhoneTicketProcessing";
 import PhoneTicket from "views/admin/ticket/PhoneTicket/PhoneTicket";
 import FieldTicket from "views/admin/ticket/FieldTicket/FieldTicket";
@@ -47,6 +46,10 @@ import Services from "views/admin/ClientManagement/SERVICE/Services";
 import AddService from "views/admin/ClientManagement/SERVICE/AddService";
 import HelpDeskList from "views/Modals/ListeHelpdesk";
 import ServicesDetails from "views/admin/ClientManagement/SERVICE/ServicesDetails";
+import PhoneTicketDetails from "views/admin/ticket/PhoneTicket/PhoneTicketDetails";
+import TicketApproval from "views/admin/ticket/TicketApprouval";
+import FieldDetails from "views/admin/ticket/FieldTicket/FieldDetails";
+import AddPhoneTicketToTechnicien from "views/admin/ticket/PhoneTicket/AddPhoneTicketToTechnicien";
 //import PhoneTicketDetails from "views/admin/ticket/PhoneTicket/";
 const routes = [
   {
@@ -65,14 +68,7 @@ const routes = [
     component: <Dashboard />,
     allowedRoles: ["COORDINATRICE"],
   },
-  {
-    name: "Agences",
-    layout: "/admin",
-    path: "/agence/:clientId/:clientName",
-    icon: <MdHome className="h-6 w-6" />,
-    component: <AgenceDetails />,
-    allowedRoles: ["COORDINATRICE"],
-  },
+
   {
     name: "Profile",
     layout: "/admin",
@@ -249,14 +245,8 @@ const routes = [
     component: <ListeTechniciens />,
     allowedRoles: ["COORDINATRICE"],
   },
-  {
-    name: "Add ",
-    layout: "/admin",
-    path: "add/field",
-    icon: <IoMdAlert className="h-6 w-6" />,
-    component: <AddFieldTicket />,
-    allowedRoles: ["COORDINATRICE"],
-  },
+ 
+ 
   {
     name: "Add ",
     layout: "/admin",
@@ -274,6 +264,23 @@ const routes = [
     allowedRoles: ["COORDINATRICE"],
   },
   {
+    name: "Ticket Details",
+    layout: "/admin",
+    path: "/field/:ticketId",
+    icon: <IoMdAlert className="h-6 w-6" />,
+    component: <FieldDetails />,
+    allowedRoles: ["COORDINATRICE"],
+  },
+  {
+    name: "Ticket Details",
+    layout: "/admin",
+    path: "/phone/:ticketId",
+    icon: <IoMdAlert className="h-6 w-6" />,
+    component: <PhoneTicketDetails />,
+    allowedRoles: ["COORDINATRICE"],
+  },
+  {
+
     name: "liste helpdesk",
     layout: "/admin",
     path: "liste helpdesk",
@@ -298,6 +305,7 @@ const routes = [
     component: <ClientManagement />,
     allowedRoles: ["COORDINATRICE"],
   },
+  /////ADD//
   {
     name: "Add ",
     layout: "/admin",
@@ -306,16 +314,17 @@ const routes = [
     component: <AddPhoneTicket />,
     allowedRoles: ["COORDINATRICE"],
   },
-  {/*
-    name: "Deatils ",
-    layout: "/admin",
-    path: "phone/details/:phoneticketId",
-    icon: <IoMdAlert className="h-6 w-6" />,
-    component: <PhoneTicketDetails />,
-    allowedRoles: ["COORDINATRICE"],
-*/},
   {
-    name: "Ticket  Processing",
+    name: "Add ",
+    layout: "/admin",
+    path: "add/field",
+    icon: <IoMdAlert className="h-6 w-6" />,
+    component: <AddFieldTicket />,
+    allowedRoles: ["COORDINATRICE"],
+  },
+  
+  {
+    name: "Field  Processing",
     layout: "/admin",
     path: "processing",
     icon: <IoMdAlert className="h-6 w-6" />,
@@ -323,7 +332,15 @@ const routes = [
     allowedRoles: ["COORDINATRICE"],
   },
   {
-    name: "Ticket  Processing",
+    name: "Ticket  Approuval",
+    layout: "/admin",
+    path: "approval",
+    icon: <IoMdAlert className="h-6 w-6" />,
+    component: <TicketApproval />,
+    allowedRoles: ["COORDINATRICE"],
+  },
+  {
+    name: "Phone  Processing",
     layout: "/admin",
     path: "processing/phone",
     icon: <IoMdAlert className="h-6 w-6" />,
@@ -346,6 +363,15 @@ const routes = [
     component: <FieldTicket />,
     allowedRoles: ["COORDINATRICE"],
   },
+  {
+    name: "Phone Technicien",
+    layout: "/admin",
+    path: "add/technicien/phone",
+    icon: <IoMdAlert className="h-6 w-6" />,
+    component: <AddPhoneTicketToTechnicien/>,
+    allowedRoles: ["COORDINATRICE"],
+  },
+  
   {
     name: "No Access",
     layout: "/noacces",

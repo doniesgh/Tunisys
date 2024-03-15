@@ -29,6 +29,7 @@ const Services = () => {
         setIsModalEquipmentOpen(true);
     }
 
+
     const handleCheckboxChange = serviceId => {
         setSelectedServiceIds(prevSelectedIds => {
             if (prevSelectedIds.includes(serviceId)) {
@@ -40,7 +41,6 @@ const Services = () => {
         console.log(serviceId)
 
     };
-
     useEffect(() => {
         fetch('/api/service/liste')
             .then(response => response.json())
@@ -71,7 +71,7 @@ const Services = () => {
     return (
         <div>
             <ToastContainer />
-            <div class="mt-9 relative overflow-x-auto shadow-lg sm:rounded-lg">
+            <div className="mt-9 relative overflow-x-auto shadow-lg sm:rounded-lg">
                 <div className="ml-2 flex items-center flex-wrap space-x-5">
                     <a href='/admin/client/service/add'><button className="dark:text-gray-300 flex text-gray-900 dark:text-gray-600"><IoMdAdd className="h-6 w-6" />Add</button></a>
                     <Link to={selectedServiceIds.length === 1 ? `/admin/client/service/${selectedServiceIds}` : '#'}>
@@ -82,11 +82,7 @@ const Services = () => {
                                     Swal.fire({
                                         icon: 'warning',
                                         title: 'Please select one service',
-
-                                    });
-                                }
-                            }}
-                        >
+                                    });}}}  >
                             <IoMdEye className="h-6 w-6" />
                             View
                         </button>
@@ -101,16 +97,10 @@ const Services = () => {
                                 });
                             } else {
                                 const selectedService = serviceData.find(service => service._id === selectedServiceIds[0]);
-                                handleOpenEquipemntModal(selectedService);
-                            }
-                        }}
-                    >
+                                handleOpenEquipemntModal(selectedService);}}}>
                         <MdAtm className="h-6 w-6" />
                         Equipement
                     </button>
-
-
-
                     <button
                         className={`text-gray-900 dark:text-gray-300 flex dark:text-gray-600 ${selectedServiceIds.length !== 1 ? 'cursor-not-allowed' : ''}`}
                         onClick={() => {
@@ -130,33 +120,24 @@ const Services = () => {
                                 }).then((result) => {
                                     if (result.isConfirmed) {
                                         handleDeleteClick(selectedServiceIds);
-                                    }
-                                });
-                            }
-                        }}
-                    >
-                        <MdDelete className="h-6 w-6" />
-                        Delete
-                    </button>
-
+                                    }});} }}>
+                        <MdDelete className="h-6 w-6" />Delete </button>
                 </div>
                 <br />
                 <div className="ml-4 flex items-center flex-wrap space-x-5">
                     <label htmlFor="search" className=" text-gray-700    dark:text-gray-300">
-                        Service Contrat No :      </label>
+                        Service  No :      </label>
                     <input
                         type="text"
                         id="search"
                         className="block p-2 text-sm text-gray-700 border border-gray-300 rounded-lg w-40 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-200 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Search"
-                        onChange={(e) => setSCNQuery(e.target.value)}
-
-                    />
+                        onChange={(e) => setSCNQuery(e.target.value)}  />
                     <button
                         type="button"
                         className="inline-flex ml-[-5px] items-center  text-red-700 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
                     >
-                        <svg className="w-5 h-5 text-red-700    dark:text-gray-300" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+                        <svg className="w-5 h-5 text-red-700    dark:text-gray-300" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd"></path></svg>
                         Search
                     </button>
                 </div>
@@ -169,7 +150,7 @@ const Services = () => {
                                 <th scope="col" className="p-4">
                                     <div className="flex items-center">
                                         <input id="checkbox-all-search" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                        <label for="checkbox-all-search" className="sr-only">checkbox</label>
+                                        <label htmlFor="checkbox-all-search" className="sr-only">checkbox</label>
                                     </div>
                                 </th>
                                 <th scope="col" className="px-6 py-3 text-gray-900   dark:text-gray-300">
@@ -184,7 +165,6 @@ const Services = () => {
                                     Effective Date                        </th>
                                 <th scope="col" className="px-6 py-3 text-gray-900    dark:text-gray-300">
                                     Contrat termination                        </th>
-
                                 <th scope="col" className="px-6 py-3 text-gray-900    dark:text-gray-300">
                                     Created                     </th>
                                 <th scope="col" className="px-6 py-3 text-gray-900    dark:text-gray-300">
@@ -192,7 +172,6 @@ const Services = () => {
                             </tr>
                         </thead>
                         <tbody>
-
                             {serviceData
                                 .filter((service) =>
                                     Object.values(service)
@@ -200,15 +179,11 @@ const Services = () => {
                                         .some((value) => value.toLowerCase().includes(scnquery.toLowerCase()))
                                 )
                                 .map((service, index) => (
-                                    <tr
-                                        key={index}
-                                        style={{
-                                            backgroundColor: (() => {
+                                    <tr key={index} style={{ backgroundColor: (() => {
                                                 const terminationDate = service.termination_date || null;
                                                 const currentDate = new Date();
                                                 const halfYearInMonths = 6;
                                                 const monthsDifference = terminationDate ? differenceInMonths(new Date(terminationDate), currentDate) : null;
-
                                                 if (monthsDifference !== null) {
                                                     if (monthsDifference > halfYearInMonths) {
                                                         return 'hsl(120, 80%, 55%)';
@@ -216,24 +191,19 @@ const Services = () => {
                                                         return 'red';
                                                     } else {
                                                         return 'orange';
-                                                    }
-                                                }
+                                                    } }
                                                 return '';
-                                            })(),
-                                        }} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                            })(), }} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" >
                                         <td className="w-4 p-4">
-                                            <div className="flex items-center">
                                                 <input
                                                     id={`checkbox-table-search-${index}`}
                                                     type="checkbox"
-                                                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                                    className="w-4 h-4 flex items-center text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                                                     checked={selectedServiceIds.includes(service._id)}
-                                                    onChange={() => handleCheckboxChange(service._id)}
-                                                />
+                                                    onChange={() => handleCheckboxChange(service._id)} />
                                                 <label htmlFor={`checkbox-table-search-${index}`} className="sr-only">
                                                     checkbox
                                                 </label>
-                                            </div>
                                         </td>
                                         <td scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                             {service.service_no || 'N/A'}
@@ -241,11 +211,9 @@ const Services = () => {
                                         <td scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                             {service.contrat.length > 0 ? service.contrat[0].contrat_sn : 'N/A'}
                                         </td>
-
                                         <td scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                             {service.model}
                                         </td>
-
                                         <td scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                             {service.quantity}
                                         </td> <td scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -253,27 +221,21 @@ const Services = () => {
                                         </td>
                                         <td scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                             {format(new Date(service.termination_date || 'N/A'), 'yyyy/MM/dd')}
-
                                         </td>
                                         <td scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                             {format(new Date(service.createdAt || 'N/A'), 'yyyy/MM/dd HH:mm')}
                                         </td>
-                                        <button onClick={() => handleOpenModal(service)} scope="row" className="mt-9 px-6 py-4  font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            <MdEdit className="h-6 w-6 mt-[-35px]" /></button>
-                                    </tr>
-                                ))}
+                                        <td><button onClick={() => handleOpenModal(service)} className="mt-9 px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                <MdEdit className="h-6 w-6 mt-[-35px]" /></button></td>
+                                    </tr> ))}
                         </tbody>
                     </table>
-                    {isModalOpen && <ModifyService handleClose={handleCloseModal} service={selectedService} />
-                    }
+                    {isModalOpen && <ModifyService handleClose={handleCloseModal} service={selectedService} />}
                     {isModalEquipmentOpen && <ModifyEquipement handleClose={handleCloseEquipemntModal} service={selectedService} />}
-
-
                 </div>
             </div>
-
             <nav className="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4" aria-label="Table navigation">
-                <span className="text-sm font-normal  text-gray-900    dark:text-gray-300 mb-4 md:mb-0 block w-full md:inline md:w-auto">Showing <span class="font-semibold text-gray-900 dark:text-white">1-10</span> of <span class="font-semibold text-gray-900 dark:text-white">1000</span></span>
+                <span className="text-sm font-normal  text-gray-900    dark:text-gray-300 mb-4 md:mb-0 block w-full md:inline md:w-auto">Showing <span className="font-semibold text-gray-900 dark:text-white">1-10</span> of <span className="font-semibold text-gray-900 dark:text-white">1000</span></span>
                 <ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
                     <li>
                         <a href="#" className="flex items-center justify-center px-3 h-8 ms-0 leading-tight  text-gray-900 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700    dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>

@@ -14,8 +14,8 @@ const TechnicienList = ({ handleClose, handleTechnicienSelection }) => {
         }
     };
 
-    const selectTechnicien = (client) => {
-        handleTechnicienSelection(client);
+    const selectTechnicien = (technicien) => {
+        handleTechnicienSelection(technicien);
         handleClose();
     };
 

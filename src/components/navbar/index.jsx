@@ -11,8 +11,14 @@ import { IoMdNotificationsOutline, } from "react-icons/io";
 import { MdDelete, MdPerson } from "react-icons/md";
 import { NotificationsContext } from "Contexts/notificationContext"
 import { useNotificationsContext } from "Hooks/useNotificationContext";
-
+import { fetchAlerts } from 'components/alert/index';
 const Navbar = (props) => {
+  const [alerts, setAlerts] = useState([]);
+  useEffect(() => {
+    fetchAlerts()
+      .then((data) => setAlerts(data))
+      .catch((error) => console.error('Error fetching alerts:', error));
+  }, []);
   const [notificationsCount, setNotificationsCount] = useState(0);
   const { onOpenSidenav, brandText } = props;
   const [darkmode, setDarkmode] = React.useState(false);
@@ -258,7 +264,6 @@ const Navbar = (props) => {
 };
 
 export default Navbar;
-
 
 
 

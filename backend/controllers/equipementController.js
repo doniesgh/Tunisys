@@ -1,5 +1,6 @@
 const Equipement = require('../models/equipement')
 const mongoose = require('mongoose')
+const Service = require('../models/service');
 // get all equipements
 /*const getEquipements = async (req, res) => {
   try {
@@ -9,6 +10,27 @@ const mongoose = require('mongoose')
     res.status(500).json({ error: error.message });
   }
 }*/
+const getAllDataEquipement = async (req, res) => {
+  try {
+    const equipements = await Equipement.find()
+      .populate({
+        path: 'client',
+        select: 'client'})
+      
+      .populate({
+        path: 'service',
+        select: 'service_no effective_date termination_date response_time_critical response_time_major response_time_minor',
+      })
+      .select('equipement_sn status equipement_type adresse status modele');
+
+    res.status(200).json(equipements);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+
 const getEquipementsModal = async (req, res) => {
   try {
 
@@ -167,6 +189,34 @@ const createEquipement = async (req, res) => {
 };
 
 // delete equipement
+
+const deleteEquipement = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ error: 'Invalid equipement ID' });
+    }
+
+    // Delete the equipment
+    const equipement = await Equipement.findOneAndDelete({ _id: id });
+
+    if (!equipement) {
+      return res.status(404).json({ error: 'Equipement not found' });
+    }
+
+    // Update service documents to remove the deleted equipment ID
+    await Service.updateMany({ equipement: id }, { $pull: { equipement: id } });
+
+    res.status(200).json(equipement);
+  } catch (error) {
+    console.error('Error deleting equipement:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+
+/*
 const deleteEquipement = async (req, res) => {
   const { id } = req.params
 
@@ -181,7 +231,7 @@ const deleteEquipement = async (req, res) => {
   }
 
   res.status(200).json(equipement)
-}
+}*/
 // update an equipement
 const updateEquipement = async (req, res) => {
   const { id } = req.params;
@@ -269,20 +319,12 @@ const updateEquipement = async (req, res) => {
   res.status(200).json(updatedEquipement);
 };
 
-const countEquipements = async (req, res) => {
-  try {
-    const count = await Equipement.countDocuments();
-    res.status(200).json({ count });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
 module.exports = {
-  countEquipements,
   getEquipements,
   getEquipement,
   createEquipement,
   deleteEquipement,
   updateEquipement,
-  getEquipementsModal
+  getEquipementsModal,
+  getAllDataEquipement
 }

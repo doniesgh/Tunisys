@@ -71,7 +71,7 @@ const ControllerProfil = () => {
 
   return (
     <div>
-      <h1 className=" ml-6  font-semibold text-[3rem]	dark:text-tunisys-100 text-tunisys-100 text-center mt-3">Paramétres de profile </h1>
+      <h1 className=" ml-6  font-semibold text-[1.5rem]	dark:text-tunisys-100 text-tunisys-100 text-center mt-3">Paramétres de profile </h1>
       <Card className=" p-8 h-full w-full  bg-gray-100 rounded-lg border">
         <div className="mb-4">
           <label className="block  text-gray-700 text-lg font-bold mb-2" htmlFor="username">

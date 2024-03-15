@@ -3,7 +3,6 @@ import { useState, useEffect, useMemo } from "react";
 import { useAuthContext } from 'views/auth/hooks/useAuthContext'
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { MdList, MdShower } from 'react-icons/md';
 import ContratList from '../../../Modals/ContratList';
 import EquipementList from './EquipementList';
 const AddService = () => {
@@ -76,21 +75,21 @@ const AddService = () => {
     };*/
     const handleEquipementSelection = (selectedEquipements) => {
         const equipementIds = selectedEquipements.map(equipement => equipement._id);
-        const equipementSns = selectedEquipements.map(equipement => equipement.equipement_sn); 
-        setselectedEquipementSn(equipementSns.join(', ')); 
+        const equipementSns = selectedEquipements.map(equipement => equipement.equipement_sn);
+        setselectedEquipementSn(equipementSns.join(', '));
         setequipement(equipementIds);
     };
-    
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const clients = {
             model,
             equipement: equipement,
-            contrat:selectedContratId,
+            contrat: selectedContratId,
             service_no,
             effective_date,
             termination_date,
-            client:clientId,
+            client: clientId,
             quantity,
             working_hour_start,
             working_hour_end,
@@ -189,7 +188,7 @@ const AddService = () => {
                                 <input
                                     type="text"
                                     onClick={openEquipementModal}
-                                    placeholder={selectedEquipementSn }
+                                    placeholder={selectedEquipementSn}
                                     value={selectedEquipementSn}
                                     readOnly
                                     className="block w-full border-red-700 rounded-md border-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 cursor-pointer"

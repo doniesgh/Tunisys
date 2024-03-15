@@ -19,7 +19,7 @@ const gethelpdesk = async (req, res) => {
     if (users.length > 0) {
       res.status(200).json(users);
     } else {
-      res.status(404).json([]);
+      res.status(404).json();
     }
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -80,8 +80,9 @@ const loginUser = async (req, res) => {
 
 const NbClient = async (req, res) => {
   try {
-    const nbClients = await User.countDocuments({ role: 'client' });
-    res.status(200).json({ count: nbClients });
+    let count = await User.countDocuments({ role: 'client' });
+    count = count || 0;
+    res.status(200).json({ count });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -89,7 +90,8 @@ const NbClient = async (req, res) => {
 
 const NbHelpDesk = async (req, res) => {
   try {
-    const nbHelpDesk = await User.countDocuments({ role: 'HELPDESK' });
+    let nbHelpDesk = await User.countDocuments({ role: 'HELPDESK' });
+    nbHelpDesk = nbHelpDesk || 0;
     res.status(200).json({ count: nbHelpDesk });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -97,15 +99,13 @@ const NbHelpDesk = async (req, res) => {
 };
 const NbTechnicien = async (req, res) => {
   try {
-    const nbTechnicien = await User.aggregate([
-      { $match: { role: 'TECHNICIEN' } },
-      { $count: 'count' }
-    ]);
-
-    res.status(200).json({ count: nbTechnicien[0] ? nbTechnicien[0].count : 0 });
+    let nbTechnicien = await User.countDocuments({ role: 'TECHNICIEN' });
+    nbTechnicien = nbTechnicien || 0;
+    res.status(200).json({ count: nbTechnicien });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
+  
 };
 
 

@@ -35,7 +35,7 @@ router.get('/technicien',userController.NbTechnicien)
 router.get('/profile/:userId', userController.getUserById);
 router.get('/role/:role', userController.getUserByRole);
 router.get('/techhelp',getTechHelp);
-router.get('/helpdesk/liste',gethelpdesk);
+router.get('/helpdeskListe',gethelpdesk);
 router.get('/technicien/liste',getTechnicien);
 
 

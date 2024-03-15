@@ -3,6 +3,7 @@ const Service = require('../models/service');
 const Equipement = require('../models/equipement');
 const Client = require('../models/client');
 const mongoose = require('mongoose');
+
 const getEquipmentByServiceId = async (req, res) => {
   const { serviceId } = req.params;
 
@@ -44,10 +45,10 @@ const addService = async (req, res) => {
     }
 
     // Check if client exists and if service is already associated with a client
-    const existingServiceForClient = await Service.findOne({ client });
+    /*const existingServiceForClient = await Service.findOne({ client });
     if (existingServiceForClient) {
       return res.status(400).json({ error: 'A service is already associated with this client' });
-    }
+    }*/
 
     // Check if contract exists and if service is already associated with a contract
     const existingServiceForContrat = await Service.findOne({ contrat });

@@ -10,6 +10,46 @@ const getNotification = async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
       }
   }
+/*
+  
+const getNotification = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    // Set up SSE headers
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Connection', 'keep-alive');
+
+    // Find notifications for the user
+    const notifications = await Notification.find({ receiverId: userId }).sort({ createdAt: -1 });
+
+    // Send notifications to the client
+    notifications.forEach(notification => {
+      res.write(`data: ${JSON.stringify(notification)}\n\n`);
+    });
+
+    // Keep the connection open
+    res.flushHeaders();
+
+    // Listen for changes in notifications and send updates to the client
+    const changeStream = Notification.watch();
+    changeStream.on('change', async () => {
+      const updatedNotifications = await Notification.find({ receiverId: userId }).sort({ createdAt: -1 });
+      updatedNotifications.forEach(notification => {
+        res.write(`data: ${JSON.stringify(notification)}\n\n`);
+      });
+      res.flushHeaders();
+    });
+
+    // Handle client disconnection
+    req.on('close', () => {
+      changeStream.close();
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
   /*const getNotification = async (req, res) => {
     try {
       const userId = req.user._id;

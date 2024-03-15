@@ -47,25 +47,13 @@ export default function HelpDesk(props) {
     }
     return activeNavbar;
   };
-  /*const getRoutes = (routes) => {
-    return routes.map((prop, key) => {
-      if (prop.layout === "/client") {
-        return (
-          <Route path={`/${prop.path}`} element={prop.component} key={key} />
-        );
-      } else {
-        return null;
-      }
-    });
-  };*/
+  
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
-      if (prop.layout === "/client") {
-        // Add a conditional check for allowed roles
+      if (prop.layout === "/helpdesk") {
         if (user && prop.allowedRoles.includes(user.role)) {
           return <Route path={`/${prop.path}`} element={prop.component} key={key} />;
         } else {
-          // Optionally, you can redirect to a different page if the user's role is not allowed
           return <Navigate to="/noaccess" key={key} />;
         }
       } else {
@@ -97,7 +85,7 @@ export default function HelpDesk(props) {
 
                 <Route
                   path="/"
-                  element={<Navigate to="/client/default" replace />}
+                  element={<Navigate to="/helpdesk/default" replace />}
                 />
               </Routes>
             </div>

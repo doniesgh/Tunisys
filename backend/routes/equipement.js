@@ -5,25 +5,18 @@ const {
     createEquipement,
     deleteEquipement,
     updateEquipement,
-    countEquipements
+    getAllDataEquipement,
 } = require('../controllers/equipementController')
-
 const router = express.Router()
-
 router.get('/list', getEquipements)
-
+router.get('/ticket', getAllDataEquipement)
 // GET a single rec
 router.get('/:id', getEquipement)
-
 // POST rec
 router.post('/add', createEquipement)
-
 // DELETE Equipement
 router.delete('/:id', deleteEquipement)
-
 // UPDATE Equipement
 router.patch('/:id', updateEquipement )
-//count equipement
-router.get('/number',countEquipements)
 module.exports = router
 

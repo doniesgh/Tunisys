@@ -2,28 +2,26 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const ticketSchema = new Schema(
   {
-    ticket_no: {
+    reference: {
       type: String
     },
-    equipement_sn: {
-      type: String
+    type: {
+      type: String,
+      enum: ['PHONE', 'FIELD']
     },
+
     service_station: {
       type: String
     },
-    fault_type: {
+    service_type: {
       type: String
     },
-    response_time: {
-      type: Date
-    },
-    fixing_time: {
-      type: Date
-    },
+
     client: {
       type: Schema.Types.ObjectId,
       ref: 'Client',
     },
+
     localisation: {
       type: String
     },
@@ -39,14 +37,22 @@ const ticketSchema = new Schema(
     arrival_time: {
       type: Date
     },
+    solving_time: {
+      type: Date
+    },
     completion_time: {
       type: Date
+    },
+    starting_time:{
+      type:Date
     },
     attachement: {
       type: String
     },
     contact: {
-      type: String
+      type: Schema.Types.ObjectId,
+      ref: 'Contact',
+      required: true,
     },
     equipement: {
       type: Schema.Types.ObjectId,
@@ -58,11 +64,34 @@ const ticketSchema = new Schema(
       ref: 'User',
       required: true,
     },
-    type: String,
-    status: { type: String, default: 'assigned' },
+    call_time: {
+      type: Date
+    },
+    garantie_start_date: {
+      type: Date
+    },
+    garantie_end_date: {
+      type: Date
+    },
+    solution: {
+      type: String
+    },
+    status: {
+      type: String, default: 'ASSIGNED',
+      enum: ['ASSIGNED', 'SOLVED', 'ACCEPTED', 'APPROVED','LOADING','REPORTED']
+    },
+    note: {
+      type: String
+    },
+    raison_transfert: {
+      type: String
+    },
   },
   {
-    timestamp: { type: Date, default: Date.now },
+    timestamps: { 
+    createdAt: 'created_at', 
+    updatedAt: 'updated_at'  
+  }
   }
 );
 

@@ -6,7 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const UserForm = () => {
     const { dispatch } = useUsersContext()
-   // const {user} = useAuthContext()
+    // const {user} = useAuthContext()
     const [firstname, setFirstname] = useState('')
     const [lastname, setLastname] = useState('')
     const [email, setEmail] = useState('')
@@ -44,13 +44,13 @@ const UserForm = () => {
             toast.success('Utilisateur ajouté avec succès');
         }
     }
-    
+
     return (
         <div>
             <ToastContainer />
             <form className="create block mt-6" onSubmit={handleSubmit}>
-                <h1 className="text-4xl  mt-10 mb-2.5 mx-0 text-center font-semibold dark:text-gray-600">Ajouter utilisateur :</h1>
-                <label className="block dark:text-gray-600 text-2xl">Nom :</label>
+                <h1 className="text-2xl  mt-10 mb-2.5 mx-0 text-center font-semibold dark:text-gray-600">Ajouter utilisateur :</h1>
+                <label className="block dark:text-gray-600 text-xl">Nom :</label>
                 <input className={`block w-full border rounded box-border mt-2.5 mb-5 p-2.5 border-solid ${emptyFields.includes('firstname') ? 'border-red-500' : 'border-[#ddd]'
                     }`} type="text"
                     value={firstname}
@@ -58,7 +58,7 @@ const UserForm = () => {
                     onChange={(e) => setFirstname(e.target.value)}
 
                 />
-                <label className="block dark:text-gray-600 text-2xl">Prénom :</label>
+                <label className="block dark:text-gray-600 text-xl">Prénom :</label>
                 <input className={`block w-full border rounded box-border mt-2.5 mb-5 p-2.5 border-solid ${emptyFields.includes('lastname') ? 'border-red-500' : 'border-[#ddd]'
                     }`} type="text"
                     value={lastname}
@@ -66,21 +66,21 @@ const UserForm = () => {
                     onChange={(e) => setLastname(e.target.value)}
 
                 />
-                <label className="block dark:text-gray-600 text-2xl">Adresse email:</label>
+                <label className="block dark:text-gray-600 text-xl">Adresse email:</label>
                 <input className={`block w-full border rounded box-border mt-2.5 mb-5 p-2.5 border-solid ${emptyFields.includes('email') ? 'border-red-500' : 'border-[#ddd]'
                     }`} type="email"
                     autoComplete="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                 />
-                <label className="block dark:text-gray-600 text-2xl">Mot de passe :</label>
+                <label className="block dark:text-gray-600 text-xl">Mot de passe :</label>
                 <input className={`block w-full border rounded box-border mt-2.5 mb-5 p-2.5 border-solid ${emptyFields.includes('password') ? 'border-red-500' : 'border-[#ddd]'
-                    }`} type="password"
+                    }`} type="text"
                     autoComplete="current-password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
-                <label className="block dark:text-gray-600 text-2xl">Rôle :</label>
+                <label className="block dark:text-gray-600 text-xl">Rôle :</label>
                 <select
                     className={`block w-full border rounded box-border mt-2.5 mb-5 p-2.5 border-solid ${emptyFields.includes('role') ? 'border-red-500' : 'border-[#ddd]'}
   `} value={role}

@@ -13,8 +13,7 @@ import ControllerLayout from "layouts/Controller";
 const App = () => {
   const { user, state } = useAuthContext();
 
-
-
+ 
   useEffect(() => {
     if (user && user.role) {
       console.log("User Role:", user.role);

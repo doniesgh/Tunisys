@@ -3,24 +3,13 @@ import { IoMdAdd, IoMdDoneAll, IoMdEye } from "react-icons/io";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { format, differenceInMonths } from "date-fns";
 import { Link } from "react-router-dom";
-import ModifyEquipement from "./ModifyEquipement";
 import Swal from "sweetalert2";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 const ManagementEquipement = () => {
   const [equipementData, setEquipementData] = useState([]);
   const [selectedEquipementIds, setSelectedEquipementIds] = useState([]);
   const [selectedEquipement, setSelectedEquipement] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleOpenModal = (selectedEquipement) => {
-    setSelectedEquipement(selectedEquipement);
-    setIsModalOpen(true);
-  };
   const handleCheckboxChange = (equipementId) => {
     setSelectedEquipementIds((prevSelectedIds) => {
       if (prevSelectedIds.includes(equipementId)) {
@@ -77,12 +66,7 @@ const ManagementEquipement = () => {
   return (
     <div>
       <ToastContainer />
-      {isModalOpen && (
-        <ModifyEquipement
-          handleClose={handleCloseModal}
-          equipement={selectedEquipement}
-        />
-      )}
+     
       <div className="relative mt-9 overflow-x-auto shadow-lg sm:rounded-lg">
         <div className="ml-2 flex flex-wrap items-center space-x-5">
           <a href="/admin/add/equipement">
@@ -115,7 +99,7 @@ const ManagementEquipement = () => {
               View
             </button>
           </Link>
-          {/* </Link>    */}
+
           <button
             className={`flex text-gray-900 dark:text-gray-300 dark:text-gray-600 ${selectedEquipementIds.length !== 1 ? "cursor-not-allowed" : ""
               }`}
@@ -216,12 +200,7 @@ const ManagementEquipement = () => {
                 >
                   Date création
                 </th>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-gray-900    dark:text-gray-300"
-                >
-                  Modifier
-                </th>
+
               </tr>
             </thead>
             <tbody>
@@ -296,7 +275,7 @@ const ManagementEquipement = () => {
                     </td>
                     <td className="px-6 py-4">{equipement.modele} </td>
                     <td className="px-6 py-4">
-                    {equipement.contrat && equipement.contrat.length > 0 && (
+                      {equipement.contrat && equipement.contrat.length > 0 && (
                         <>
                           <p>{equipement.contrat[0].contrat_sn || 'N/A'}</p>
 
@@ -304,21 +283,13 @@ const ManagementEquipement = () => {
                       )}
                     </td>
                     <td className="px-6 py-4">
-                    {equipement.createdAt ? format(new Date(equipement.createdAt), 'yyyy/MM/dd ') : 'N/A'}
+                      {equipement.createdAt ? format(new Date(equipement.createdAt), 'yyyy/MM/dd ') : 'N/A'}
                     </td>
-                    <td className="px-6 py-4">
-                      <button
-                        scope="row"
-                        onClick={() => handleOpenModal(equipement)}
-                        className=" whitespace-nowrap px-6  py-4 font-medium text-gray-900 dark:text-white"
-                      >
-                        <MdEdit className="h-6 w-6" />
-                      </button>
-                    </td>
+
                   </tr>
                 ))}
             </tbody>
-          </table>{" "}
+          </table>
         </div>
       </div>
       <nav

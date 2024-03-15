@@ -1,13 +1,53 @@
-import React, { useState } from 'react';
+import React from "react";
+import {
+    IoMdAdd,
+    IoMdDoneAll,
+    IoMdEye,
+} from "react-icons/io";
+import { format } from "date-fns";
+import { toast, ToastContainer } from "react-toastify";
+import { MdDelete, MdEdit, MdShare } from "react-icons/md";
+import Swal from "sweetalert2";
+import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const PhoneTicketProcessing = () => {
+    const [phoneticketData, setPhoneTicketData] = useState([]);
+    const [selectedPhoneTicketIds, setselectedPhoneTicketIds] = useState([]);
+    useEffect(() => {
+        fetch("/api/ticket/phone")
+            .then((response) => response.json())
+            .then((data) => setPhoneTicketData(data))
+            .catch((error) => console.error("Error fetching contrat data:", error));
+    }, []);
+    console.log(phoneticketData)
+    const [scnquery, setSCNQuery] = useState("");
+    const [selectedTicket, setSelectedTicket] = useState([]);
     const [isDropdownOpen, setDropdownOpen] = useState(false);
     const toggleDropdown = () => {
         setDropdownOpen(!isDropdownOpen);
     };
+    const getBackgroundColor = (status) => {
+        switch (status) {
+            case 'ASSIGNED':
+                return 'bg-red-500';
+            case 'SOLVED':
+                return 'bg-blue-500';
+            case 'APPROVED':
+                return 'bg-green-500';
+            case 'ACCEPTED':
+                return 'bg-pink-500';
+            case 'LOADING':
+                return 'bg-orange-500';
+            case 'REPORTED':
+                return 'bg-gray-500';
+            default:
+                return '';
+        }
+    };
     return (
         <div>
-            <div class="mt-9 relative overflow-x-auto shadow-lg sm:rounded-lg">
+            <div className="mt-9 relative overflow-x-auto shadow-lg sm:rounded-lg">
                 <div className=" mt-2 flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between pb-4 ml-2">
 
                     <div className="relative inline-block text-left">
@@ -24,7 +64,7 @@ const PhoneTicketProcessing = () => {
                                 fill="none"
                                 viewBox="0 0 10 6"
                             >
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
+                                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
                             </svg>
                         </button>
 
@@ -37,204 +77,210 @@ const PhoneTicketProcessing = () => {
                             </div>
                         )}
                     </div>
-                    <div className="flex items-center flex-wrap space-x-5">
-                        <label htmlFor="search" className="text-gray-500 dark:text-gray-400">
-                            No Ticket:
-                        </label>
-                        <input
-                            type="text"
-                            id="search"
-                            className="block p-2 text-sm text-gray-900 border border-gray-300 rounded-lg w-40 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            placeholder="Search"
-                        />
-                        <label htmlFor="search" className="text-gray-500 dark:text-gray-400">
-                            Equipement S/N :      </label>
-                        <input
-                            type="text"
-                            id="search"
-                            className="block p-2 text-sm text-gray-900 border border-gray-300 rounded-lg w-40 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            placeholder="Search"
-                        />
-
-                        <label htmlFor="status" className="text-gray-500 dark:text-gray-400">
-                            Status:
-                        </label>
-                        <select
-                            id="status"
-                            className="block p-2 text-sm text-gray-900 border border-gray-300 rounded-lg w-24 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        >
-                            <option value="active">en cours</option>
-                            <option value="inactive">Inactive</option>
-                        </select>
-
-                        <label htmlFor="date" className="text-gray-500 dark:text-gray-400">
-                            Date:
-                        </label>
-                        <input
-                            type="date"
-                            id="date"
-                            className="block p-2 text-sm text-gray-900 border border-gray-300 rounded-lg w-32 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        />
-                        <label htmlFor="technicien" className="text-gray-500 dark:text-gray-400">
-                            Technicien:
-                        </label>
-                        <input
-                            type="text"
-                            id="technicien"
-                            className="block p-2 text-sm text-gray-900 border border-gray-300 rounded-lg w-32 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        />
-
-
-                        <button
-                            type="button"
-                            className="inline-flex ml-[-5px] items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
-                        >
-                            <svg className="w-5 h-5 text-gray-500 dark:text-gray-400" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
-
-                            Search
-
-                        </button>
-                    </div>
+                    
                 </div>
+                <div className="ml-4 flex flex-wrap items-center space-x-5">
+          <label
+            htmlFor="search"
+            className=" text-gray-700    dark:text-gray-300"
+          >
+            Ticket N :
+          </label>
+          <input
+            type="text"
+            id="search"
+            className="block w-40 rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm text-gray-700 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+            placeholder="Search"
+            onChange={(e) => setSCNQuery(e.target.value)}
+
+          />
+          <button
+            type="button"
+            className="ml-[-5px] inline-flex items-center  rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-red-700 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:hover:border-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
+          >
+            <svg
+              className="h-5 w-5 text-red-700    dark:text-gray-300"
+              aria-hidden="true"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fillRule="evenodd"
+                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                clipRule="evenodd"
+              ></path>
+            </svg>
+            Search
+          </button>
+        </div>
+
+                <div className="border-b border-gray-900/10 pb-6"></div>
                 <div className="overflow-x-auto">
-                    <table className="min-w-full sm:table lg:table text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                        <thead className="overflow-x-auto text-xs text-gray-700 uppercase bg-gray-50 dark:bg-tunisys-100 dark:text-white">
+                    <table className="min-w-full text-left text-sm text-gray-900 rtl:text-right dark:text-gray-900  sm:table lg:table">
+                        <thead className="overflow-x-auto bg-gray-50 text-xs uppercase dark:bg-gray-900 ">
                             <tr className="">
-                                <th scope="col" class="p-4">
-                                    <div class="flex items-center">
-                                        <input id="checkbox-all-search" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                        <label for="checkbox-all-search" class="sr-only">checkbox</label>
-                                    </div>
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Ticket No
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Status
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Equipement S/N
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Service Station
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Service type
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Fault Level
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Response Time
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Fixing Time
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Resolution Time
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Client
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Localisation
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Technicien
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Receiving Time
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Departure Time
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Arrival Time
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Completion Time
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Create Time
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Dispatch Time
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td className="w-4 p-4">
+                                <th scope="col" className="p-4">
                                     <div className="flex items-center">
                                         <input
-                                            id="checkbox-table-search-1"
+                                            id="checkbox-all-search"
                                             type="checkbox"
-                                            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                            className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600 dark:focus:ring-offset-gray-800"
                                         />
-                                        <label htmlFor="checkbox-table-search-1" className="sr-only">
+                                        <label htmlFor="checkbox-all-search" className="sr-only">
                                             checkbox
                                         </label>
                                     </div>
-                                </td>
-                                <td scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    Apple MacBook Pro 17"
-                                </td>
+                                </th>
+                                <th
+                                    scope="col"
+                                    className="px-6 py-3 text-gray-900   dark:text-gray-300"
+                                >
+                                    Ticket No
+                                </th>
+                                <th
+                                    scope="col"
+                                    className="px-6 py-3 text-gray-900    dark:text-gray-300"
+                                >
+                                    Status
+                                </th>
+                                <th
+                                    scope="col"
+                                    className="px-6 py-3 text-gray-900    dark:text-gray-300"
+                                >
+                                    Equipement S/N
+                                </th>
+                                <th
+                                    scope="col"
+                                    className="px-6 py-3 text-gray-900    dark:text-gray-300"
+                                >
+                                    Service Station
+                                </th>
+                                <th
+                                    scope="col"
+                                    className="px-6 py-3 text-gray-900    dark:text-gray-300"
+                                >
+                                    Service type
+                                </th>
+                                <th
+                                    scope="col"
+                                    className="px-6 py-3 text-gray-900    dark:text-gray-300"
+                                >
+                                    TYPE
+                                </th>
+                                <th
+                                    scope="col"
+                                    className="px-6 py-3 text-gray-900    dark:text-gray-300"
+                                >
+                                    Client
+                                </th>
 
-                                <td className="px-6 py-4 bg-tunisys-100 text-white">
-                                    en cours
-                                </td>
-                                <td className="px-6 py-4">
-                                    Silver
-                                </td> <td className="px-6 py-4">
-                                    Silver
-                                </td> <td className="px-6 py-4">
-                                    Silver
-                                </td> <td className="px-6 py-4">
-                                    Silver
-                                </td> <td className="px-6 py-4">
-                                    Silver
-                                </td> <td className="px-6 py-4">
-                                    Silver
-                                </td>
-                                <td className="px-6 py-4 flex "> <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>  Online
+                                <th
+                                    scope="col"
+                                    className="px-6 py-3 text-gray-900    dark:text-gray-300"
+                                >
+                                    Call in Time
+                                </th>
+                                <th
+                                    scope="col"
+                                    className="px-6 py-3 text-gray-900    dark:text-gray-300"
+                                >
+                                    Receiving Time
+                                </th>
 
-                                </td>
-                                <td className="px-6 py-4">
-                                    Silver
-                                </td>
-                                <td className="px-6 py-4">
-                                    Laptop
-                                </td>
-                                <td className="px-6 py-4">
-                                    $2999
-                                </td>
-                                <td className="px-6 py-4">
-                                    <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                                </td>
-                                <td className="px-6 py-4">
-                                    <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                                </td>
-                                <td className="px-6 py-4">
-                                    <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                                </td>
-                                <td className="px-6 py-4">
-                                    <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                                </td>
-                                <td className="px-6 py-4">
-                                    <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                                </td>
-                                <td className="px-6 py-4">
-                                    <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                                </td>
+                                <th
+                                    scope="col"
+                                    className="px-6 py-3 text-gray-900    dark:text-gray-300"
+                                >
+                                    Technicien
+                                </th>
+
+
+                                <th
+                                    scope="col"
+                                    className="px-6 py-3 text-gray-900    dark:text-gray-300"
+                                >
+                                    Resolving time
+                                </th>
+                              
                             </tr>
+                        </thead>
+                        <tbody>
+                            {phoneticketData
+                                .filter((phoneticket) =>
+                                    Object.values(phoneticket)
+                                        .filter((value) => typeof value === "string")
+                                        .some((value) =>
+                                            value.toLowerCase().includes(scnquery.toLowerCase())
+                                        )
+                                )
+                                .map((phoneticket, index) => (
+                                    <tr
+                                        key={index}
+                                        className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600"
+                                    >
+                                        <td className="w-4 p-4">
+                                            <div className="flex items-center">
+                                                <input
+                                                    id={`checkbox-table-search-${index}`}
+                                                    type="checkbox"
+                                                    className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600 dark:focus:ring-offset-gray-800"
+                                                    checked={selectedPhoneTicketIds.includes(
+                                                        phoneticket._id
+                                                    )}
+                                                //onChange={() => handleCheckboxChange(phoneticket._id)}
+                                                />
+                                                <label
+                                                    htmlFor={`checkbox-table-search-${index}`}
+                                                    className="sr-only">
+                                                    checkbox
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td
+                                            scope="row"
+                                            className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
+                                        >
+                                            {phoneticket.reference || ''}
+                                        </td>
+                                        <td className={`px-6 py-4 ${getBackgroundColor(phoneticket.status)}`}>
+                      {phoneticket.status || ''}
+                    </td>
+                                        <td className="px-6 py-4">{phoneticket.equipement?.equipement_sn || ''}</td>
 
+                                        <td className="px-6 py-4">{phoneticket.service_station || ''}</td>
+                                        <td className="px-6 py-4">{phoneticket.service_type || ''}</td>
+                                        <td className="px-6 py-4">{phoneticket.type || ''}</td>
 
+                                        <td className="px-6 py-4">{phoneticket.client ? (
+                                            <>
+                                                {phoneticket.client.client || ''}
+                                            </>
+                                        ) : (
+                                            "N/A"
+                                        )}</td>
+                                        <td className="px-6 py-4"> {phoneticket.call_time ? format(new Date(phoneticket.call_time), 'yyyy/MM/dd ') : 'Not yet'}</td>
+                                        <td className="px-6 py-4"> {phoneticket.receiving_time ? format(new Date(phoneticket.receiving_time), 'yyyy/MM/dd ') : 'Not yet'}</td>
+                                        <td className="px-6 py-4">
+                                            {phoneticket.technicien ? (
+                                                <>
+                                                    {phoneticket.technicien.firstname || ''} {phoneticket.technicien.lastname || ''}
+                                                </>
+                                            ) : (
+                                                "N/A"
+                                            )}
+                                        </td>
+                                        <td className="px-6 py-4">  {phoneticket.solving_time ? format(new Date(phoneticket.solving_time), 'yyyy/MM/dd ') : 'Not yet'}</td>
+                                        
+                                    </tr>
+                                ))}
                         </tbody>
                     </table>
+
                 </div>
             </div>
             <nav className="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4" aria-label="Table navigation">
-                <span className="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">Showing <span class="font-semibold text-gray-900 dark:text-white">1-10</span> of <span class="font-semibold text-gray-900 dark:text-white">1000</span></span>
+                <span className="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">Showing <span className="font-semibold text-gray-900 dark:text-white">1-10</span> of <span className="font-semibold text-gray-900 dark:text-white">1000</span></span>
                 <ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
                     <li>
                         <a href="#" className="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>

@@ -17,7 +17,6 @@ import Calandar from "views/admin/calandar";
 import { IoMdAlert, IoMdPerson, IoMdTv } from "react-icons/io";
 import ManageReclamation from "views/admin/Reclamation";
 import History from "views/admin/History";
-import Client from "views/admin/client";
 import RecRep from "views/admin/RecReporte";
 import { IoAlert } from "react-icons/io5";
 import Dropdown from "components/dropdown";
